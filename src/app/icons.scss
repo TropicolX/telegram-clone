@@ -1,0 +1,1249 @@
+@use "sass:map";
+
+@font-face {
+  font-family: 'icons';
+  src: url('/icons.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon {
+  font-family: "icons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.5rem;
+}
+
+$icons-map: (
+  "active-sessions": "\f101",
+  "add-one-badge": "\f102",
+  "add-user-filled": "\f103",
+  "add-user": "\f104",
+  "add": "\f105",
+  "admin": "\f106",
+  "allow-speak": "\f107",
+  "animals": "\f108",
+  "animations": "\f109",
+  "archive-filled": "\f10a",
+  "archive-from-main": "\f10b",
+  "archive-to-main": "\f10c",
+  "archive": "\f10d",
+  "arrow-down-circle": "\f10e",
+  "arrow-down": "\f10f",
+  "arrow-left": "\f110",
+  "arrow-right": "\f111",
+  "ask-support": "\f112",
+  "attach": "\f113",
+  "author-hidden": "\f114",
+  "avatar-archived-chats": "\f115",
+  "avatar-deleted-account": "\f116",
+  "avatar-saved-messages": "\f117",
+  "bold": "\f118",
+  "boost-outline": "\f119",
+  "boost": "\f11a",
+  "boostcircle": "\f11b",
+  "boosts": "\f11c",
+  "bot-command": "\f11d",
+  "bot-commands-filled": "\f11e",
+  "bots": "\f11f",
+  "bug": "\f120",
+  "calendar-filter": "\f121",
+  "calendar": "\f122",
+  "camera-add": "\f123",
+  "camera": "\f124",
+  "car": "\f125",
+  "card": "\f126",
+  "cash-circle": "\f127",
+  "channel-filled": "\f128",
+  "channel": "\f129",
+  "channelviews": "\f12a",
+  "chat-badge": "\f12b",
+  "chats-badge": "\f12c",
+  "check": "\f12d",
+  "clock-edit": "\f12e",
+  "clock": "\f12f",
+  "close-circle": "\f130",
+  "close-topic": "\f131",
+  "close": "\f132",
+  "cloud-download": "\f133",
+  "collapse-modal": "\f134",
+  "collapse": "\f135",
+  "colorize": "\f136",
+  "comments-sticker": "\f137",
+  "comments": "\f138",
+  "copy-media": "\f139",
+  "copy": "\f13a",
+  "darkmode": "\f13b",
+  "data": "\f13c",
+  "delete-filled": "\f13d",
+  "delete-left": "\f13e",
+  "delete-user": "\f13f",
+  "delete": "\f140",
+  "document": "\f141",
+  "double-badge": "\f142",
+  "down": "\f143",
+  "download": "\f144",
+  "eats": "\f145",
+  "edit": "\f146",
+  "email": "\f147",
+  "enter": "\f148",
+  "expand-modal": "\f149",
+  "expand": "\f14a",
+  "eye-closed-outline": "\f14b",
+  "eye-closed": "\f14c",
+  "eye-outline": "\f14d",
+  "eye": "\f14e",
+  "favorite-filled": "\f14f",
+  "favorite": "\f150",
+  "file-badge": "\f151",
+  "flag": "\f152",
+  "folder-badge": "\f153",
+  "folder": "\f154",
+  "fontsize": "\f155",
+  "forums": "\f156",
+  "forward": "\f157",
+  "fullscreen": "\f158",
+  "gifs": "\f159",
+  "gift": "\f15a",
+  "group-filled": "\f15b",
+  "group": "\f15c",
+  "grouped-disable": "\f15d",
+  "grouped": "\f15e",
+  "hand-stop": "\f15f",
+  "hashtag": "\f160",
+  "heart-outline": "\f161",
+  "heart": "\f162",
+  "help": "\f163",
+  "info-filled": "\f164",
+  "info": "\f165",
+  "install": "\f166",
+  "italic": "\f167",
+  "key": "\f168",
+  "keyboard": "\f169",
+  "lamp": "\f16a",
+  "language": "\f16b",
+  "large-pause": "\f16c",
+  "large-play": "\f16d",
+  "link-badge": "\f16e",
+  "link-broken": "\f16f",
+  "link": "\f170",
+  "location": "\f171",
+  "lock-badge": "\f172",
+  "lock": "\f173",
+  "logout": "\f174",
+  "loop": "\f175",
+  "mention": "\f176",
+  "message-failed": "\f177",
+  "message-pending": "\f178",
+  "message-read": "\f179",
+  "message-succeeded": "\f17a",
+  "message": "\f17b",
+  "microphone-alt": "\f17c",
+  "microphone": "\f17d",
+  "monospace": "\f17e",
+  "more-circle": "\f17f",
+  "more": "\f180",
+  "move-caption-down": "\f181",
+  "move-caption-up": "\f182",
+  "mute": "\f183",
+  "muted": "\f184",
+  "my-notes": "\f185",
+  "new-chat-filled": "\f186",
+  "next": "\f187",
+  "nochannel": "\f188",
+  "noise-suppression": "\f189",
+  "non-contacts": "\f18a",
+  "one-filled": "\f18b",
+  "open-in-new-tab": "\f18c",
+  "password-off": "\f18d",
+  "pause": "\f18e",
+  "permissions": "\f18f",
+  "phone-discard-outline": "\f190",
+  "phone-discard": "\f191",
+  "phone": "\f192",
+  "photo": "\f193",
+  "pin-badge": "\f194",
+  "pin-list": "\f195",
+  "pin": "\f196",
+  "pinned-chat": "\f197",
+  "pinned-message": "\f198",
+  "pip": "\f199",
+  "play-story": "\f19a",
+  "play": "\f19b",
+  "poll": "\f19c",
+  "previous": "\f19d",
+  "privacy-policy": "\f19e",
+  "quote-text": "\f19f",
+  "quote": "\f1a0",
+  "readchats": "\f1a1",
+  "recent": "\f1a2",
+  "reload": "\f1a3",
+  "remove-quote": "\f1a4",
+  "remove": "\f1a5",
+  "reopen-topic": "\f1a6",
+  "replace": "\f1a7",
+  "replies": "\f1a8",
+  "reply-filled": "\f1a9",
+  "reply": "\f1aa",
+  "revenue-split": "\f1ab",
+  "revote": "\f1ac",
+  "save-story": "\f1ad",
+  "saved-messages": "\f1ae",
+  "schedule": "\f1af",
+  "search": "\f1b0",
+  "select": "\f1b1",
+  "send-outline": "\f1b2",
+  "send": "\f1b3",
+  "settings-filled": "\f1b4",
+  "settings": "\f1b5",
+  "share-filled": "\f1b6",
+  "share-screen-outlined": "\f1b7",
+  "share-screen-stop": "\f1b8",
+  "share-screen": "\f1b9",
+  "show-message": "\f1ba",
+  "sidebar": "\f1bb",
+  "skip-next": "\f1bc",
+  "skip-previous": "\f1bd",
+  "smallscreen": "\f1be",
+  "smile": "\f1bf",
+  "sort": "\f1c0",
+  "speaker-muted-story": "\f1c1",
+  "speaker-outline": "\f1c2",
+  "speaker-story": "\f1c3",
+  "speaker": "\f1c4",
+  "spoiler-disable": "\f1c5",
+  "spoiler": "\f1c6",
+  "sport": "\f1c7",
+  "star": "\f1c8",
+  "stars-lock": "\f1c9",
+  "stats": "\f1ca",
+  "stealth-future": "\f1cb",
+  "stealth-past": "\f1cc",
+  "stickers": "\f1cd",
+  "stop-raising-hand": "\f1ce",
+  "stop": "\f1cf",
+  "story-caption": "\f1d0",
+  "story-expired": "\f1d1",
+  "story-priority": "\f1d2",
+  "story-reply": "\f1d3",
+  "strikethrough": "\f1d4",
+  "tag-add": "\f1d5",
+  "tag-crossed": "\f1d6",
+  "tag-filter": "\f1d7",
+  "tag-name": "\f1d8",
+  "tag": "\f1d9",
+  "timer": "\f1da",
+  "toncoin": "\f1db",
+  "transcribe": "\f1dc",
+  "truck": "\f1dd",
+  "unarchive": "\f1de",
+  "underlined": "\f1df",
+  "unlock-badge": "\f1e0",
+  "unlock": "\f1e1",
+  "unmute": "\f1e2",
+  "unpin": "\f1e3",
+  "unread": "\f1e4",
+  "up": "\f1e5",
+  "user-filled": "\f1e6",
+  "user-online": "\f1e7",
+  "user": "\f1e8",
+  "video-outlined": "\f1e9",
+  "video-stop": "\f1ea",
+  "video": "\f1eb",
+  "view-once": "\f1ec",
+  "voice-chat": "\f1ed",
+  "volume-1": "\f1ee",
+  "volume-2": "\f1ef",
+  "volume-3": "\f1f0",
+  "web": "\f1f1",
+  "webapp": "\f1f2",
+  "word-wrap": "\f1f3",
+  "zoom-in": "\f1f4",
+  "zoom-out": "\f1f5",
+);
+
+.icon-active-sessions::before {
+  content: map.get($icons-map, "active-sessions");
+}
+
+.icon-add-one-badge::before {
+  content: map.get($icons-map, "add-one-badge");
+}
+
+.icon-add-user-filled::before {
+  content: map.get($icons-map, "add-user-filled");
+}
+
+.icon-add-user::before {
+  content: map.get($icons-map, "add-user");
+}
+
+.icon-add::before {
+  content: map.get($icons-map, "add");
+}
+
+.icon-admin::before {
+  content: map.get($icons-map, "admin");
+}
+
+.icon-allow-speak::before {
+  content: map.get($icons-map, "allow-speak");
+}
+
+.icon-animals::before {
+  content: map.get($icons-map, "animals");
+}
+
+.icon-animations::before {
+  content: map.get($icons-map, "animations");
+}
+
+.icon-archive-filled::before {
+  content: map.get($icons-map, "archive-filled");
+}
+
+.icon-archive-from-main::before {
+  content: map.get($icons-map, "archive-from-main");
+}
+
+.icon-archive-to-main::before {
+  content: map.get($icons-map, "archive-to-main");
+}
+
+.icon-archive::before {
+  content: map.get($icons-map, "archive");
+}
+
+.icon-arrow-down-circle::before {
+  content: map.get($icons-map, "arrow-down-circle");
+}
+
+.icon-arrow-down::before {
+  content: map.get($icons-map, "arrow-down");
+}
+
+.icon-arrow-left::before {
+  content: map.get($icons-map, "arrow-left");
+}
+
+.icon-arrow-right::before {
+  content: map.get($icons-map, "arrow-right");
+}
+
+.icon-ask-support::before {
+  content: map.get($icons-map, "ask-support");
+}
+
+.icon-attach::before {
+  content: map.get($icons-map, "attach");
+}
+
+.icon-author-hidden::before {
+  content: map.get($icons-map, "author-hidden");
+}
+
+.icon-avatar-archived-chats::before {
+  content: map.get($icons-map, "avatar-archived-chats");
+}
+
+.icon-avatar-deleted-account::before {
+  content: map.get($icons-map, "avatar-deleted-account");
+}
+
+.icon-avatar-saved-messages::before {
+  content: map.get($icons-map, "avatar-saved-messages");
+}
+
+.icon-bold::before {
+  content: map.get($icons-map, "bold");
+}
+
+.icon-boost-outline::before {
+  content: map.get($icons-map, "boost-outline");
+}
+
+.icon-boost::before {
+  content: map.get($icons-map, "boost");
+}
+
+.icon-boostcircle::before {
+  content: map.get($icons-map, "boostcircle");
+}
+
+.icon-boosts::before {
+  content: map.get($icons-map, "boosts");
+}
+
+.icon-bot-command::before {
+  content: map.get($icons-map, "bot-command");
+}
+
+.icon-bot-commands-filled::before {
+  content: map.get($icons-map, "bot-commands-filled");
+}
+
+.icon-bots::before {
+  content: map.get($icons-map, "bots");
+}
+
+.icon-bug::before {
+  content: map.get($icons-map, "bug");
+}
+
+.icon-calendar-filter::before {
+  content: map.get($icons-map, "calendar-filter");
+}
+
+.icon-calendar::before {
+  content: map.get($icons-map, "calendar");
+}
+
+.icon-camera-add::before {
+  content: map.get($icons-map, "camera-add");
+}
+
+.icon-camera::before {
+  content: map.get($icons-map, "camera");
+}
+
+.icon-car::before {
+  content: map.get($icons-map, "car");
+}
+
+.icon-card::before {
+  content: map.get($icons-map, "card");
+}
+
+.icon-cash-circle::before {
+  content: map.get($icons-map, "cash-circle");
+}
+
+.icon-channel-filled::before {
+  content: map.get($icons-map, "channel-filled");
+}
+
+.icon-channel::before {
+  content: map.get($icons-map, "channel");
+}
+
+.icon-channelviews::before {
+  content: map.get($icons-map, "channelviews");
+}
+
+.icon-chat-badge::before {
+  content: map.get($icons-map, "chat-badge");
+}
+
+.icon-chats-badge::before {
+  content: map.get($icons-map, "chats-badge");
+}
+
+.icon-check::before {
+  content: map.get($icons-map, "check");
+}
+
+.icon-clock-edit::before {
+  content: map.get($icons-map, "clock-edit");
+}
+
+.icon-clock::before {
+  content: map.get($icons-map, "clock");
+}
+
+.icon-close-circle::before {
+  content: map.get($icons-map, "close-circle");
+}
+
+.icon-close-topic::before {
+  content: map.get($icons-map, "close-topic");
+}
+
+.icon-close::before {
+  content: map.get($icons-map, "close");
+}
+
+.icon-cloud-download::before {
+  content: map.get($icons-map, "cloud-download");
+}
+
+.icon-collapse-modal::before {
+  content: map.get($icons-map, "collapse-modal");
+}
+
+.icon-collapse::before {
+  content: map.get($icons-map, "collapse");
+}
+
+.icon-colorize::before {
+  content: map.get($icons-map, "colorize");
+}
+
+.icon-comments-sticker::before {
+  content: map.get($icons-map, "comments-sticker");
+}
+
+.icon-comments::before {
+  content: map.get($icons-map, "comments");
+}
+
+.icon-copy-media::before {
+  content: map.get($icons-map, "copy-media");
+}
+
+.icon-copy::before {
+  content: map.get($icons-map, "copy");
+}
+
+.icon-darkmode::before {
+  content: map.get($icons-map, "darkmode");
+}
+
+.icon-data::before {
+  content: map.get($icons-map, "data");
+}
+
+.icon-delete-filled::before {
+  content: map.get($icons-map, "delete-filled");
+}
+
+.icon-delete-left::before {
+  content: map.get($icons-map, "delete-left");
+}
+
+.icon-delete-user::before {
+  content: map.get($icons-map, "delete-user");
+}
+
+.icon-delete::before {
+  content: map.get($icons-map, "delete");
+}
+
+.icon-document::before {
+  content: map.get($icons-map, "document");
+}
+
+.icon-double-badge::before {
+  content: map.get($icons-map, "double-badge");
+}
+
+.icon-down::before {
+  content: map.get($icons-map, "down");
+}
+
+.icon-download::before {
+  content: map.get($icons-map, "download");
+}
+
+.icon-eats::before {
+  content: map.get($icons-map, "eats");
+}
+
+.icon-edit::before {
+  content: map.get($icons-map, "edit");
+}
+
+.icon-email::before {
+  content: map.get($icons-map, "email");
+}
+
+.icon-enter::before {
+  content: map.get($icons-map, "enter");
+}
+
+.icon-expand-modal::before {
+  content: map.get($icons-map, "expand-modal");
+}
+
+.icon-expand::before {
+  content: map.get($icons-map, "expand");
+}
+
+.icon-eye-closed-outline::before {
+  content: map.get($icons-map, "eye-closed-outline");
+}
+
+.icon-eye-closed::before {
+  content: map.get($icons-map, "eye-closed");
+}
+
+.icon-eye-outline::before {
+  content: map.get($icons-map, "eye-outline");
+}
+
+.icon-eye::before {
+  content: map.get($icons-map, "eye");
+}
+
+.icon-favorite-filled::before {
+  content: map.get($icons-map, "favorite-filled");
+}
+
+.icon-favorite::before {
+  content: map.get($icons-map, "favorite");
+}
+
+.icon-file-badge::before {
+  content: map.get($icons-map, "file-badge");
+}
+
+.icon-flag::before {
+  content: map.get($icons-map, "flag");
+}
+
+.icon-folder-badge::before {
+  content: map.get($icons-map, "folder-badge");
+}
+
+.icon-folder::before {
+  content: map.get($icons-map, "folder");
+}
+
+.icon-fontsize::before {
+  content: map.get($icons-map, "fontsize");
+}
+
+.icon-forums::before {
+  content: map.get($icons-map, "forums");
+}
+
+.icon-forward::before {
+  content: map.get($icons-map, "forward");
+}
+
+.icon-fullscreen::before {
+  content: map.get($icons-map, "fullscreen");
+}
+
+.icon-gifs::before {
+  content: map.get($icons-map, "gifs");
+}
+
+.icon-gift::before {
+  content: map.get($icons-map, "gift");
+}
+
+.icon-group-filled::before {
+  content: map.get($icons-map, "group-filled");
+}
+
+.icon-group::before {
+  content: map.get($icons-map, "group");
+}
+
+.icon-grouped-disable::before {
+  content: map.get($icons-map, "grouped-disable");
+}
+
+.icon-grouped::before {
+  content: map.get($icons-map, "grouped");
+}
+
+.icon-hand-stop::before {
+  content: map.get($icons-map, "hand-stop");
+}
+
+.icon-hashtag::before {
+  content: map.get($icons-map, "hashtag");
+}
+
+.icon-heart-outline::before {
+  content: map.get($icons-map, "heart-outline");
+}
+
+.icon-heart::before {
+  content: map.get($icons-map, "heart");
+}
+
+.icon-help::before {
+  content: map.get($icons-map, "help");
+}
+
+.icon-info-filled::before {
+  content: map.get($icons-map, "info-filled");
+}
+
+.icon-info::before {
+  content: map.get($icons-map, "info");
+}
+
+.icon-install::before {
+  content: map.get($icons-map, "install");
+}
+
+.icon-italic::before {
+  content: map.get($icons-map, "italic");
+}
+
+.icon-key::before {
+  content: map.get($icons-map, "key");
+}
+
+.icon-keyboard::before {
+  content: map.get($icons-map, "keyboard");
+}
+
+.icon-lamp::before {
+  content: map.get($icons-map, "lamp");
+}
+
+.icon-language::before {
+  content: map.get($icons-map, "language");
+}
+
+.icon-large-pause::before {
+  content: map.get($icons-map, "large-pause");
+}
+
+.icon-large-play::before {
+  content: map.get($icons-map, "large-play");
+}
+
+.icon-link-badge::before {
+  content: map.get($icons-map, "link-badge");
+}
+
+.icon-link-broken::before {
+  content: map.get($icons-map, "link-broken");
+}
+
+.icon-link::before {
+  content: map.get($icons-map, "link");
+}
+
+.icon-location::before {
+  content: map.get($icons-map, "location");
+}
+
+.icon-lock-badge::before {
+  content: map.get($icons-map, "lock-badge");
+}
+
+.icon-lock::before {
+  content: map.get($icons-map, "lock");
+}
+
+.icon-logout::before {
+  content: map.get($icons-map, "logout");
+}
+
+.icon-loop::before {
+  content: map.get($icons-map, "loop");
+}
+
+.icon-mention::before {
+  content: map.get($icons-map, "mention");
+}
+
+.icon-message-failed::before {
+  content: map.get($icons-map, "message-failed");
+}
+
+.icon-message-pending::before {
+  content: map.get($icons-map, "message-pending");
+}
+
+.icon-message-read::before {
+  content: map.get($icons-map, "message-read");
+}
+
+.icon-message-succeeded::before {
+  content: map.get($icons-map, "message-succeeded");
+}
+
+.icon-message::before {
+  content: map.get($icons-map, "message");
+}
+
+.icon-microphone-alt::before {
+  content: map.get($icons-map, "microphone-alt");
+}
+
+.icon-microphone::before {
+  content: map.get($icons-map, "microphone");
+}
+
+.icon-monospace::before {
+  content: map.get($icons-map, "monospace");
+}
+
+.icon-more-circle::before {
+  content: map.get($icons-map, "more-circle");
+}
+
+.icon-more::before {
+  content: map.get($icons-map, "more");
+}
+
+.icon-move-caption-down::before {
+  content: map.get($icons-map, "move-caption-down");
+}
+
+.icon-move-caption-up::before {
+  content: map.get($icons-map, "move-caption-up");
+}
+
+.icon-mute::before {
+  content: map.get($icons-map, "mute");
+}
+
+.icon-muted::before {
+  content: map.get($icons-map, "muted");
+}
+
+.icon-my-notes::before {
+  content: map.get($icons-map, "my-notes");
+}
+
+.icon-new-chat-filled::before {
+  content: map.get($icons-map, "new-chat-filled");
+}
+
+.icon-next::before {
+  content: map.get($icons-map, "next");
+}
+
+.icon-nochannel::before {
+  content: map.get($icons-map, "nochannel");
+}
+
+.icon-noise-suppression::before {
+  content: map.get($icons-map, "noise-suppression");
+}
+
+.icon-non-contacts::before {
+  content: map.get($icons-map, "non-contacts");
+}
+
+.icon-one-filled::before {
+  content: map.get($icons-map, "one-filled");
+}
+
+.icon-open-in-new-tab::before {
+  content: map.get($icons-map, "open-in-new-tab");
+}
+
+.icon-password-off::before {
+  content: map.get($icons-map, "password-off");
+}
+
+.icon-pause::before {
+  content: map.get($icons-map, "pause");
+}
+
+.icon-permissions::before {
+  content: map.get($icons-map, "permissions");
+}
+
+.icon-phone-discard-outline::before {
+  content: map.get($icons-map, "phone-discard-outline");
+}
+
+.icon-phone-discard::before {
+  content: map.get($icons-map, "phone-discard");
+}
+
+.icon-phone::before {
+  content: map.get($icons-map, "phone");
+}
+
+.icon-photo::before {
+  content: map.get($icons-map, "photo");
+}
+
+.icon-pin-badge::before {
+  content: map.get($icons-map, "pin-badge");
+}
+
+.icon-pin-list::before {
+  content: map.get($icons-map, "pin-list");
+}
+
+.icon-pin::before {
+  content: map.get($icons-map, "pin");
+}
+
+.icon-pinned-chat::before {
+  content: map.get($icons-map, "pinned-chat");
+}
+
+.icon-pinned-message::before {
+  content: map.get($icons-map, "pinned-message");
+}
+
+.icon-pip::before {
+  content: map.get($icons-map, "pip");
+}
+
+.icon-play-story::before {
+  content: map.get($icons-map, "play-story");
+}
+
+.icon-play::before {
+  content: map.get($icons-map, "play");
+}
+
+.icon-poll::before {
+  content: map.get($icons-map, "poll");
+}
+
+.icon-previous::before {
+  content: map.get($icons-map, "previous");
+}
+
+.icon-privacy-policy::before {
+  content: map.get($icons-map, "privacy-policy");
+}
+
+.icon-quote-text::before {
+  content: map.get($icons-map, "quote-text");
+}
+
+.icon-quote::before {
+  content: map.get($icons-map, "quote");
+}
+
+.icon-readchats::before {
+  content: map.get($icons-map, "readchats");
+}
+
+.icon-recent::before {
+  content: map.get($icons-map, "recent");
+}
+
+.icon-reload::before {
+  content: map.get($icons-map, "reload");
+}
+
+.icon-remove-quote::before {
+  content: map.get($icons-map, "remove-quote");
+}
+
+.icon-remove::before {
+  content: map.get($icons-map, "remove");
+}
+
+.icon-reopen-topic::before {
+  content: map.get($icons-map, "reopen-topic");
+}
+
+.icon-replace::before {
+  content: map.get($icons-map, "replace");
+}
+
+.icon-replies::before {
+  content: map.get($icons-map, "replies");
+}
+
+.icon-reply-filled::before {
+  content: map.get($icons-map, "reply-filled");
+}
+
+.icon-reply::before {
+  content: map.get($icons-map, "reply");
+}
+
+.icon-revenue-split::before {
+  content: map.get($icons-map, "revenue-split");
+}
+
+.icon-revote::before {
+  content: map.get($icons-map, "revote");
+}
+
+.icon-save-story::before {
+  content: map.get($icons-map, "save-story");
+}
+
+.icon-saved-messages::before {
+  content: map.get($icons-map, "saved-messages");
+}
+
+.icon-schedule::before {
+  content: map.get($icons-map, "schedule");
+}
+
+.icon-search::before {
+  content: map.get($icons-map, "search");
+}
+
+.icon-select::before {
+  content: map.get($icons-map, "select");
+}
+
+.icon-send-outline::before {
+  content: map.get($icons-map, "send-outline");
+}
+
+.icon-send::before {
+  content: map.get($icons-map, "send");
+}
+
+.icon-settings-filled::before {
+  content: map.get($icons-map, "settings-filled");
+}
+
+.icon-settings::before {
+  content: map.get($icons-map, "settings");
+}
+
+.icon-share-filled::before {
+  content: map.get($icons-map, "share-filled");
+}
+
+.icon-share-screen-outlined::before {
+  content: map.get($icons-map, "share-screen-outlined");
+}
+
+.icon-share-screen-stop::before {
+  content: map.get($icons-map, "share-screen-stop");
+}
+
+.icon-share-screen::before {
+  content: map.get($icons-map, "share-screen");
+}
+
+.icon-show-message::before {
+  content: map.get($icons-map, "show-message");
+}
+
+.icon-sidebar::before {
+  content: map.get($icons-map, "sidebar");
+}
+
+.icon-skip-next::before {
+  content: map.get($icons-map, "skip-next");
+}
+
+.icon-skip-previous::before {
+  content: map.get($icons-map, "skip-previous");
+}
+
+.icon-smallscreen::before {
+  content: map.get($icons-map, "smallscreen");
+}
+
+.icon-smile::before {
+  content: map.get($icons-map, "smile");
+}
+
+.icon-sort::before {
+  content: map.get($icons-map, "sort");
+}
+
+.icon-speaker-muted-story::before {
+  content: map.get($icons-map, "speaker-muted-story");
+}
+
+.icon-speaker-outline::before {
+  content: map.get($icons-map, "speaker-outline");
+}
+
+.icon-speaker-story::before {
+  content: map.get($icons-map, "speaker-story");
+}
+
+.icon-speaker::before {
+  content: map.get($icons-map, "speaker");
+}
+
+.icon-spoiler-disable::before {
+  content: map.get($icons-map, "spoiler-disable");
+}
+
+.icon-spoiler::before {
+  content: map.get($icons-map, "spoiler");
+}
+
+.icon-sport::before {
+  content: map.get($icons-map, "sport");
+}
+
+.icon-star::before {
+  content: map.get($icons-map, "star");
+}
+
+.icon-stars-lock::before {
+  content: map.get($icons-map, "stars-lock");
+}
+
+.icon-stats::before {
+  content: map.get($icons-map, "stats");
+}
+
+.icon-stealth-future::before {
+  content: map.get($icons-map, "stealth-future");
+}
+
+.icon-stealth-past::before {
+  content: map.get($icons-map, "stealth-past");
+}
+
+.icon-stickers::before {
+  content: map.get($icons-map, "stickers");
+}
+
+.icon-stop-raising-hand::before {
+  content: map.get($icons-map, "stop-raising-hand");
+}
+
+.icon-stop::before {
+  content: map.get($icons-map, "stop");
+}
+
+.icon-story-caption::before {
+  content: map.get($icons-map, "story-caption");
+}
+
+.icon-story-expired::before {
+  content: map.get($icons-map, "story-expired");
+}
+
+.icon-story-priority::before {
+  content: map.get($icons-map, "story-priority");
+}
+
+.icon-story-reply::before {
+  content: map.get($icons-map, "story-reply");
+}
+
+.icon-strikethrough::before {
+  content: map.get($icons-map, "strikethrough");
+}
+
+.icon-tag-add::before {
+  content: map.get($icons-map, "tag-add");
+}
+
+.icon-tag-crossed::before {
+  content: map.get($icons-map, "tag-crossed");
+}
+
+.icon-tag-filter::before {
+  content: map.get($icons-map, "tag-filter");
+}
+
+.icon-tag-name::before {
+  content: map.get($icons-map, "tag-name");
+}
+
+.icon-tag::before {
+  content: map.get($icons-map, "tag");
+}
+
+.icon-timer::before {
+  content: map.get($icons-map, "timer");
+}
+
+.icon-toncoin::before {
+  content: map.get($icons-map, "toncoin");
+}
+
+.icon-transcribe::before {
+  content: map.get($icons-map, "transcribe");
+}
+
+.icon-truck::before {
+  content: map.get($icons-map, "truck");
+}
+
+.icon-unarchive::before {
+  content: map.get($icons-map, "unarchive");
+}
+
+.icon-underlined::before {
+  content: map.get($icons-map, "underlined");
+}
+
+.icon-unlock-badge::before {
+  content: map.get($icons-map, "unlock-badge");
+}
+
+.icon-unlock::before {
+  content: map.get($icons-map, "unlock");
+}
+
+.icon-unmute::before {
+  content: map.get($icons-map, "unmute");
+}
+
+.icon-unpin::before {
+  content: map.get($icons-map, "unpin");
+}
+
+.icon-unread::before {
+  content: map.get($icons-map, "unread");
+}
+
+.icon-up::before {
+  content: map.get($icons-map, "up");
+}
+
+.icon-user-filled::before {
+  content: map.get($icons-map, "user-filled");
+}
+
+.icon-user-online::before {
+  content: map.get($icons-map, "user-online");
+}
+
+.icon-user::before {
+  content: map.get($icons-map, "user");
+}
+
+.icon-video-outlined::before {
+  content: map.get($icons-map, "video-outlined");
+}
+
+.icon-video-stop::before {
+  content: map.get($icons-map, "video-stop");
+}
+
+.icon-video::before {
+  content: map.get($icons-map, "video");
+}
+
+.icon-view-once::before {
+  content: map.get($icons-map, "view-once");
+}
+
+.icon-voice-chat::before {
+  content: map.get($icons-map, "voice-chat");
+}
+
+.icon-volume-1::before {
+  content: map.get($icons-map, "volume-1");
+}
+
+.icon-volume-2::before {
+  content: map.get($icons-map, "volume-2");
+}
+
+.icon-volume-3::before {
+  content: map.get($icons-map, "volume-3");
+}
+
+.icon-web::before {
+  content: map.get($icons-map, "web");
+}
+
+.icon-webapp::before {
+  content: map.get($icons-map, "webapp");
+}
+
+.icon-word-wrap::before {
+  content: map.get($icons-map, "word-wrap");
+}
+
+.icon-zoom-in::before {
+  content: map.get($icons-map, "zoom-in");
+}
+
+.icon-zoom-out::before {
+  content: map.get($icons-map, "zoom-out");
+}
