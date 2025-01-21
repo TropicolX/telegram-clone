@@ -11,8 +11,8 @@ interface AvatarProps {
 
 const Avatar = ({
   borderRadius = '50%',
-  fontSize = 16,
-  fontWeight = 400,
+  fontSize = 25,
+  fontWeight = 600,
   width,
   data,
 }: AvatarProps) => {
@@ -36,7 +36,7 @@ const Avatar = ({
         borderRadius,
         fontSize: `${fontSize}px`,
         fontWeight,
-        backgroundColor: 'rgba(239,225,245,0.25)',
+        backgroundImage: 'linear-gradient(white -300%, var(--accent-color))',
       }}
       className="shrink-0 aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center"
     >

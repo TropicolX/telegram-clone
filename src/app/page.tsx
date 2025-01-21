@@ -4,9 +4,9 @@ import Sidebar from '../components/Sidebar';
 
 export default function Home() {
   return (
-    <div className="flex w-vw h-vh">
+    <div className="flex h-full w-full">
       <Sidebar />
-      <div className="relative flex flex-col items-center w-full h-screen overflow-hidden border-l border-solid border-l-color-borders">
+      <div className="relative flex flex-col items-center w-full h-full overflow-hidden border-l border-solid border-l-color-borders">
         <div className="chat-background absolute top-0 left-0 w-full h-full -z-10 overflow-hidden bg-theme-background"></div>
         {/* Chat Header */}
         <div className="flex items-center w-full bg-background relative z-10 py-1 pl-[23px] pr-[13px] shrink-0 h-[3.5rem]">
@@ -44,7 +44,13 @@ export default function Home() {
             <RippleButton icon="more" />
           </div>
         </div>
-        <div className="flex flex-col grow items-center w-full h-full"></div>
+        <div className="relative w-full h-full overflow-hidden">
+          <div className="flex flex-col grow items-center w-full h-full">
+            {/* Message list */}
+            <div className="custom-scroll flex-1 w-full mb-2 overflow-y-scroll overflow-x-hidden transition-[bottom,_transform] duration-[150ms,_300ms] ease-[ease-out,_cubic-bezier(0.33,1,0.68,1)] xl:transition-transform xl:duration-300 xl:ease-[cubic-bezier(0.33,1,0.68,1)] xl:transform"></div>
+            {/* Middle column footer */}
+          </div>
+        </div>
       </div>
     </div>
   );

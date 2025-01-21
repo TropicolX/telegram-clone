@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased text-color-text select-none">
+      <body className="h-screen w-screen antialiased text-color-text select-none overflow-hidden">
         {children}
       </body>
     </html>

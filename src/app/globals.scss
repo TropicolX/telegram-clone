@@ -144,6 +144,7 @@
     --color-peer-gradient-20: repeating-linear-gradient(-45deg, #1585cf 0px, #1585cf 5px, #f2ab1d 5px, #f2ab1d 10px, #ffffff 10px, #ffffff 15px);
     --color-webpage-initial-background: #2e3939;
     --color-borders-alternate: rgba(0, 0, 0, 0.1);
+    --color-scrollbar: rgba(90, 90, 90, 0.3);
     --color-text-meta-apple: #8c8c91;
     --color-text-green: #4fae4e;
     --color-text-green-rgb: 79, 174, 78;
@@ -216,6 +217,18 @@
   }
 }
 
+.custom-scroll:hover {
+  scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+  transition: scrollbar-color .3s ease;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+}
+
 .icon-menu {
   position: absolute;
 }
@@ -244,4 +257,50 @@
   background-color: var(--color-text-secondary);
   transition: transform .25s;
   transform: rotate(0);
+}
+
+
+
+button:not(.active) .icon-close {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+button.active .icon-close {
+  animation: grow-icon .4s ease-out;
+}
+
+button:not(.active) .icon-new-chat-filled {
+  animation: grow-icon .4s ease-out;
+}
+
+button.active .icon-new-chat-filled {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+@keyframes grow-icon {
+  0% {
+    transform: scale(0.5);
+    opacity: .8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hide-icon {
+  0% {
+    transform: scale(1);
+    opacity: .4;
+  }
+
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
 }

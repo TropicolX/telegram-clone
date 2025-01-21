@@ -1,7 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
+
+import Button from './Button';
 import RippleButton from './RippleButton';
 import SearchInput from './SearchInput';
+import ChatFolders from './ChatFolders';
 
 const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
 
@@ -27,6 +30,7 @@ export default function Sidebar() {
     return savedWidth;
   });
   const [maxWidth, setMaxWidth] = useState(getMaxWidth());
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const calculateMaxWidth = () => {
@@ -82,13 +86,24 @@ export default function Sidebar() {
   return (
     <div
       style={{ width: `${width}px` }}
-      className="bg-background h-screen flex-shrink-0 relative"
+      className="group bg-background h-full flex-shrink-0 relative"
     >
-      <div className="flex items-center bg-background px-[.8125rem] pt-1.5 pb-2 gap-[.625rem]">
+      <div className="flex items-center bg-background px-[.8125rem] pt-1.5 pb-2 gap-[.625rem] h-[56px]">
         <RippleButton icon="menu" />
         <SearchInput value="" onChange={() => null} />
       </div>
-
+      <ChatFolders />
+      {/* New Chat Button */}
+      <div className="absolute right-4 bottom-4 translate-y-20 transition-transform duration-[.25s] ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0">
+        <Button
+          active
+          icon="new-chat-filled"
+          onClick={() => setOpen(!open)}
+          className={open && 'active'}
+        >
+          <i className="absolute icon icon-close" />
+        </Button>
+      </div>
       {/* Resize Handle */}
       <div
         className="absolute z-20 top-0 -right-1 h-full w-2 cursor-ew-resize"
