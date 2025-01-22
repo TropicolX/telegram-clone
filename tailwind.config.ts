@@ -39,6 +39,7 @@ export default {
         'accent-own': 'var(--color-accent-own)',
         code: 'var(--color-code)',
         'code-bg': 'var(--color-code-bg)',
+        'message-meta-own': 'var(--color-message-meta-own)',
         'message-reaction': 'var(--color-message-reaction)',
         'voice-transcribe-button': 'var(--color-voice-transcribe-button)',
         'peer-7': 'var(--color-peer-7)',

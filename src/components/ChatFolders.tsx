@@ -17,6 +17,11 @@ const ChatFolders = () => {
               <ChatPreview active={active} />
               <ChatPreview active={active} />
               <ChatPreview active={active} />
+              <ChatPreview active={active} />
+              <ChatPreview active={active} />
+              <ChatPreview active={active} />
+              <ChatPreview active={active} />
+              <ChatPreview active={active} />
             </div>
           </div>
         </div>

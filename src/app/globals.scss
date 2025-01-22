@@ -159,6 +159,13 @@
     --color-interactive-inactive: rgba(var(--color-text-secondary-rgb), 0.25);
     --color-interactive-buffered: rgba(var(--color-text-secondary-rgb), 0.25);
     --color-interactive-element-hover: rgba(var(--color-text-secondary-rgb), 0.08);
+    --border-radius-modal: 1rem;
+    --border-radius-default: 0.75rem;
+    --border-radius-default-small: 0.625rem;
+    --border-radius-default-tiny: 0.375rem;
+    --border-radius-messages: 0.9375rem;
+    --border-radius-messages-small: 0.375rem;
+    --border-radius-forum-avatar: 33.3333%;
     --font-family:
       system-ui,
       -apple-system,
@@ -177,6 +184,22 @@
 
   body {
     font-family: var(--font-family);
+  }
+
+  button:not(.active) .icon-close {
+    animation: hide-icon .4s forwards ease-out;
+  }
+
+  button.active .icon-close {
+    animation: grow-icon .4s ease-out;
+  }
+
+  button:not(.active) .icon-new-chat-filled {
+    animation: grow-icon .4s ease-out;
+  }
+
+  button.active .icon-new-chat-filled {
+    animation: hide-icon .4s forwards ease-out;
   }
 }
 
@@ -208,6 +231,128 @@
     mix-blend-mode: overlay;
   }
 
+  .message {
+    position: relative;
+    opacity: 1;
+    // transform: scale(1);
+    transition: opacity .2s ease, transform .2s ease;
+    user-select: text;
+  }
+
+  .message {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: .375rem;
+    position: relative;
+    --background-color: var(--color-background);
+    --hover-color: var(--color-reply-hover);
+    --color-reaction: var(--color-message-reaction);
+    --hover-color-reaction: var(--color-message-reaction-hover);
+    --text-color-reaction: var(--accent-color);
+    --color-reaction-chosen: var(--accent-color);
+    --text-color-reaction-chosen: #FFFFFF;
+    --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover);
+    --active-color: var(--color-reply-active);
+    --max-width: 29rem;
+    --accent-color: var(--color-primary);
+    --accent-shade-color: var(--color-primary-shade);
+    --secondary-color: var(--color-text-secondary);
+    --color-voice-transcribe: var(--color-voice-transcribe-button);
+    --thumbs-background: var(--color-background);
+    --deleting-translate-x: -50%;
+    --select-message-scale: 0.9;
+    --border-top-left-radius: var(--border-radius-messages);
+    --border-top-right-radius: var(--border-radius-messages);
+    --border-bottom-left-radius: var(--border-radius-messages);
+    --border-bottom-right-radius: var(--border-radius-messages);
+  }
+
+  .message.own {
+    flex-direction: row-reverse;
+    --background-color: var(--color-background-own);
+    --hover-color: var(--color-reply-own-hover);
+    --color-reaction: var(--color-message-reaction-own);
+    --hover-color-reaction: var(--color-message-reaction-hover-own);
+    --text-color-reaction: var(--accent-color);
+    --color-reaction-chosen: var(--accent-color);
+    --text-color-reaction-chosen: var(--color-background);
+    --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover-own);
+    --active-color: var(--color-reply-own-active);
+    --max-width: 30rem;
+    --accent-color: var(--color-accent-own);
+    --accent-shade-color: var(--color-green);
+    --secondary-color: var(--color-accent-own);
+    --color-code: var(--color-code-own);
+    --color-code-bg: var(--color-code-own-bg);
+    --color-links: var(--color-own-links);
+    --deleting-translate-x: 50%;
+    --color-text-green: var(--color-accent-own);
+    --color-voice-transcribe: var(--color-voice-transcribe-button-own);
+    --thumbs-background: var(--color-background-own);
+    --color-background-own: var(--color-background-own-apple);
+    --color-reply-own-hover: var(--color-reply-own-hover-apple);
+    --color-reply-own-active: var(--color-reply-own-active-apple);
+  }
+
+  .message:first-of-type:not(:last-of-type) {
+    --border-top-right-radius: var(--border-radius-messages-small);
+    --border-bottom-right-radius: var(--border-radius-messages-small);
+  }
+
+  .message:not(:first-of-type):not(:last-of-type) {
+    --border-top-right-radius: var(--border-radius-messages-small);
+    --border-bottom-right-radius: var(--border-radius-messages-small);
+  }
+
+  .message:last-of-type {
+    --border-bottom-right-radius: var(--border-radius-messages-small);
+  }
+
+  .message:last-of-type:not(:first-of-type) {
+    --border-top-right-radius: var(--border-radius-messages-small);
+  }
+
+
+  .message-content {
+    border-top-left-radius: var(--border-top-left-radius);
+    border-top-right-radius: var(--border-top-right-radius);
+    border-bottom-left-radius: var(--border-bottom-left-radius);
+    border-bottom-right-radius: var(--border-bottom-right-radius);
+    --accent-background-color: var(--hover-color);
+    --accent-background-active-color: var(--active-color);
+    overflow-clip-margin: .5rem;
+  }
+
+  .message.own:last-of-type .message-content {
+    --border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .message.own .message-content .svg-appendix {
+    right: -0.551rem;
+  }
+
+  .message-content .svg-appendix {
+    overflow: hidden;
+    position: absolute;
+    bottom: -0.0625rem;
+    width: .5625rem;
+    height: 1.125rem;
+    font-size: 1rem !important;
+  }
+
+  .custom-scroll:hover {
+    scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
+  }
+
+  .custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+    transition: scrollbar-color .3s ease;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto;
+  }
+
   @media screen and (min-width: 1276px) {
     .chat-background::before {
       overflow: hidden;
@@ -215,18 +360,6 @@
       transform-origin: left center;
     }
   }
-}
-
-.custom-scroll:hover {
-  scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
-}
-
-.custom-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-  transition: scrollbar-color .3s ease;
-  -webkit-overflow-scrolling: touch;
-  pointer-events: auto;
 }
 
 .icon-menu {
@@ -257,24 +390,6 @@
   background-color: var(--color-text-secondary);
   transition: transform .25s;
   transform: rotate(0);
-}
-
-
-
-button:not(.active) .icon-close {
-  animation: hide-icon .4s forwards ease-out;
-}
-
-button.active .icon-close {
-  animation: grow-icon .4s ease-out;
-}
-
-button:not(.active) .icon-new-chat-filled {
-  animation: grow-icon .4s ease-out;
-}
-
-button.active .icon-new-chat-filled {
-  animation: hide-icon .4s forwards ease-out;
 }
 
 @keyframes grow-icon {
