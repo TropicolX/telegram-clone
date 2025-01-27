@@ -195,11 +195,27 @@
     animation: grow-icon .4s ease-out;
   }
 
+  button:not(.active) .icon-loading {
+    animation: hide-icon .4s forwards ease-out;
+  }
+
+  button.active .icon-loading {
+    animation: grow-icon .4s ease-out;
+  }
+
   button:not(.active) .icon-new-chat-filled {
     animation: grow-icon .4s ease-out;
   }
 
   button.active .icon-new-chat-filled {
+    animation: hide-icon .4s forwards ease-out;
+  }
+
+  button:not(.active) .icon-arrow-right {
+    animation: grow-icon .4s ease-out;
+  }
+
+  button.active .icon-arrow-right {
     animation: hide-icon .4s forwards ease-out;
   }
 }

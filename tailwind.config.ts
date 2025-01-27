@@ -27,6 +27,7 @@ export default {
         'color-text': 'var(--color-text)',
         'color-text-secondary': 'var(--color-text-secondary)',
         'color-borders': 'var(--color-borders)',
+        'color-borders-input': 'var(--color-borders-input)',
         'color-composer-button': 'var(--color-composer-button)',
         dividers: 'var(--color-dividers)',
         links: 'var(--color-links)',
@@ -105,6 +106,20 @@ export default {
         'interactive-buffered': 'var(--color-interactive-buffered)',
         'interactive-element-hover': 'var(--color-interactive-element-hover)',
         'theme-background': 'var(--theme-background-color)',
+      },
+    },
+    animation: {
+      rotate: 'rotate 2s linear infinite',
+      dash: 'dash 1.25s ease-in-out infinite',
+    },
+    keyframes: {
+      rotate: {
+        '100%': { transform: 'rotate(360deg)' },
+      },
+      dash: {
+        '0%': { strokeDasharray: '1, 200', strokeDashoffset: '0' },
+        '50%': { strokeDasharray: '89, 200', strokeDashoffset: '-35px' },
+        '100%': { strokeDasharray: '89, 200', strokeDashoffset: '-124px' },
       },
     },
   },

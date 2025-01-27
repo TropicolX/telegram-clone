@@ -8,6 +8,12 @@ import SearchInput from './SearchInput';
 import ChatFolders from './ChatFolders';
 import useClickOutside from '@/hooks/useClickOutside';
 import clsx from 'clsx';
+import NewGroupView from './NewGroupView';
+
+enum SidebarView {
+  Default,
+  NewGroup,
+}
 
 interface SidebarProps {
   loading?: boolean;
@@ -39,7 +45,7 @@ export default function Sidebar({ loading = false }: SidebarProps) {
   });
   const [maxWidth, setMaxWidth] = useState(getMaxWidth());
   const [menuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [view, setView] = useState(SidebarView.NewGroup);
 
   const menuDomNode = useClickOutside(() => {
     setMenuOpen(false);
@@ -49,8 +55,8 @@ export default function Sidebar({ loading = false }: SidebarProps) {
     setMenuOpen((prev) => !prev);
   };
 
-  const openNewGroupModal = () => {
-    setModalOpen(true);
+  const openNewGroupView = () => {
+    setView(SidebarView.NewGroup);
     setMenuOpen(false);
   };
 
@@ -110,28 +116,47 @@ export default function Sidebar({ loading = false }: SidebarProps) {
       id="sidebar"
       style={{ width: `${width}px` }}
       className="group bg-background h-full flex-shrink-0 relative"
+      onMouseLeave={() => setMenuOpen(false)}
     >
-      <div className="flex items-center bg-background px-[.8125rem] pt-1.5 pb-2 gap-[.625rem] h-[56px]">
-        {user && (
-          <div className="relative h-10 w-10 [&>div:first-child]">
-            <div className="[&>div]:opacity-0">
-              <UserButton />
-            </div>
-            <div className="absolute left-0 top-0 flex items-center justify-center pointer-events-none">
-              <RippleButton icon="menu" />
-            </div>
-          </div>
+      {/* Default View */}
+      <div
+        className={clsx(
+          'contents',
+          view === SidebarView.Default ? 'block' : 'hidden'
         )}
-        {!user && <RippleButton icon="menu" />}
-        <SearchInput value="" onChange={() => null} />
+      >
+        <div className="flex items-center bg-background px-[.8125rem] pt-1.5 pb-2 gap-[.625rem] h-[56px]">
+          {user && (
+            <div className="relative h-10 w-10 [&>div:first-child]">
+              <div className="[&>div]:opacity-0">
+                <UserButton />
+              </div>
+              <div className="absolute left-0 top-0 flex items-center justify-center pointer-events-none">
+                <RippleButton icon="menu" />
+              </div>
+            </div>
+          )}
+          {!user && <RippleButton icon="menu" />}
+          <SearchInput value="" onChange={() => null} />
+        </div>
+        {!loading && <ChatFolders />}
+        {loading && <div>Loading...</div>}
       </div>
-      {!loading && <ChatFolders />}
-      {loading && <div>Loading...</div>}
+      {/* New Group View */}
+      <div
+        className={clsx(
+          'contents',
+          view === SidebarView.NewGroup ? 'block' : 'hidden'
+        )}
+      >
+        <NewGroupView goBack={() => setView(SidebarView.Default)} />
+      </div>
       {/* New Chat Button */}
       <div
         className={clsx(
           'absolute right-4 bottom-4 translate-y-20 transition-transform duration-[.25s] ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:translate-y-0',
-          menuOpen && 'translate-y-0'
+          menuOpen && 'translate-y-0',
+          view === SidebarView.NewGroup && 'hidden'
         )}
       >
         <Button
@@ -156,7 +181,7 @@ export default function Sidebar({ loading = false }: SidebarProps) {
             )}
           >
             <div
-              onClick={openNewGroupModal}
+              onClick={openNewGroupView}
               className="text-sm my-[.125rem] mx-1 p-1 pe-3 rounded-md font-medium scale-100 transition-transform duration-150 ease-in-out bg-transparent flex items-center relative overflow-hidden leading-6 whitespace-nowrap text-black cursor-pointer"
             >
               <i

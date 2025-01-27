@@ -38,7 +38,7 @@ const Avatar = ({
         fontWeight,
         backgroundImage: 'linear-gradient(white -300%, var(--accent-color))',
       }}
-      className="shrink-0 aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center"
+      className="shrink-0 aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center overflow-hidden"
     >
       <div className="leading-[2] select-none">{name ? name[0] : ''}</div>
     </div>
