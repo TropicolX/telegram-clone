@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { DefaultStreamChatGenerics, useChatContext } from 'stream-chat-react';
 import { UserResponse } from 'stream-chat';
-import clsx from 'clsx';
 
 import Avatar from './Avatar';
 import Button from './Button';
@@ -14,8 +13,6 @@ interface NewGroupViewProps {
 }
 
 const NewGroupView = ({ goBack }: NewGroupViewProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [creatingGroup, setCreatingGroup] = useState(false);
   const [query, setQuery] = useState('');
   const [groupName, setGroupName] = useState('');
@@ -63,7 +60,7 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
 
     if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
     debounceTimeout.current = setTimeout(async () => {
-      if (cancelled.current) return; // Skip execution if cancelled
+      if (cancelled.current) return;
 
       try {
         const userId = client.userID;
@@ -87,27 +84,7 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
     }, 200);
   };
 
-  const handleFileInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const validTypes = ['image/png', 'image/jpeg'];
-      if (validTypes.includes(file.type)) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPreviewImage(reader.result as string);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert('Please upload a valid image file (PNG or JPEG).');
-        event.target.value = '';
-      }
-    }
-  };
-
   const leave = () => {
-    setPreviewImage(null);
     setCreatingGroup(false);
     setGroupName('');
     setQuery('');
@@ -132,14 +109,14 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
       const nanoid = customAlphabet(alphabet, 7);
       const group = client.channel('messaging', nanoid(7), {
         name: groupName,
-        image: previewImage ?? undefined,
-        members: selectedUsers,
+        members: [...selectedUsers, client.userID!],
       });
 
       await group.create();
       leave();
     } catch (error) {
       console.error(error);
+      alert('Error creating group');
     } finally {
       setCreatingGroup(false);
     }
@@ -181,34 +158,8 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
       <div className="flex flex-col px-5 h-[calc(100%-3.5rem)] overflow-hidden">
         <div>
           <label
-            htmlFor="groupImage"
-            className={clsx(
-              'flex items-center justify-center mx-auto w-[7.5rem] h-[7.5rem] mb-8 bg-primary rounded-full text-white text-[3rem] cursor-pointer relative overflow-hidden transition-[border-radius] duration-200 touch-manipulation',
-              previewImage &&
-                "after:content-[''] after:block after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-[#00000066]"
-            )}
-          >
-            <input
-              id="groupImage"
-              type="file"
-              ref={fileInputRef}
-              className="hidden"
-              onChange={handleFileInputChange}
-              accept="image/png, image/jpeg"
-            />
-            <i className="icon icon-camera-add text-[3rem] z-[5] transition-transform duration-150 ease-linear scale-100"></i>
-            {previewImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={previewImage}
-                alt="Group image preview"
-                className="absolute top-0 left-0 w-full h-full object-cover"
-              />
-            )}
-          </label>
-          <label
             htmlFor="groupName"
-            className="relative block py-[11px] px-[18px] rounded-xl border border-color-borders-input shadow-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary"
+            className="relative block mt-5 py-[11px] px-[18px] rounded-xl border border-color-borders-input shadow-sm focus-within:border-primary focus-within:ring-1 focus-within:ring-primary"
           >
             <input
               type="text"

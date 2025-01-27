@@ -53,8 +53,12 @@ const ChatPreview = ({
     if (isDMChannel) {
       return `${getChatName()} joined Telegram`;
     } else {
-      // @ts-expect-error the first name is always present
-      return `${channel.data?.created_by?.first_name} created the group "${displayTitle}"`;
+      return `${
+        // @ts-expect-error one of these will be defined
+        channel.data?.created_by?.first_name ||
+        // @ts-expect-error one of these will be defined
+        channel.data?.created_by?.name.split(' ')[0]
+      } created the group "${displayTitle}"`;
     }
   }, [
     lastMessage,

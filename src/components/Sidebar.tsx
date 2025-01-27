@@ -45,7 +45,7 @@ export default function Sidebar({ loading = false }: SidebarProps) {
   });
   const [maxWidth, setMaxWidth] = useState(getMaxWidth());
   const [menuOpen, setMenuOpen] = useState(false);
-  const [view, setView] = useState(SidebarView.NewGroup);
+  const [view, setView] = useState(SidebarView.Default);
 
   const menuDomNode = useClickOutside(() => {
     setMenuOpen(false);
