@@ -40,7 +40,7 @@ const Avatar = ({
       }}
       className="shrink-0 aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center"
     >
-      <div className="select-none">{name ? name[0] : ''}</div>
+      <div className="leading-[2] select-none">{name ? name[0] : ''}</div>
     </div>
   );
 };

@@ -27,6 +27,7 @@ export default {
         'color-text': 'var(--color-text)',
         'color-text-secondary': 'var(--color-text-secondary)',
         'color-borders': 'var(--color-borders)',
+        'color-composer-button': 'var(--color-composer-button)',
         dividers: 'var(--color-dividers)',
         links: 'var(--color-links)',
         gray: 'var(--color-gray)',

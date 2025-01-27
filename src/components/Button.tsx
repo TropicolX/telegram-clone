@@ -7,12 +7,14 @@ interface ButtonProps {
   className?: string;
   icon: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({
   active = false,
   className,
   children,
+  disabled = false,
   icon,
   onClick,
 }: ButtonProps) => {
@@ -26,6 +28,7 @@ const Button = ({
           'bg-background text-[#707579bf] hover:bg-primary hover:text-white',
         className
       )}
+      disabled={disabled}
     >
       <i className={`icon icon-${icon}`} aria-hidden="true" />
       {children}
