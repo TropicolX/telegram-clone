@@ -1,18 +1,13 @@
-import React from 'react';
+import { SearchInputProps } from 'stream-chat-react';
 
-interface SearchInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const SearchInput = ({ value, onChange }: SearchInputProps) => {
+const SearchInput = ({ query, onSearch }: SearchInputProps) => {
   return (
     <div className="relative w-full bg-chat-hover text-[rgba(var(--color-text-secondary-rgb),0.5)] max-w-[calc(100%-3.25rem)] border-[2px] border-chat-hover has-[:focus]:border-primary has-[:focus]:bg-background rounded-[1.375rem] flex items-center pe-[.1875rem] transition-opacity ease-[cubic-bezier(0.33,1,0.68,1)] duration-[330ms]">
       <input
         type="text"
         name="Search"
-        value={value}
-        onChange={onChange}
+        value={query}
+        onChange={onSearch}
         placeholder="Search"
         autoComplete="off"
         className="peer order-2 h-10 rounded-[1.375rem] bg-transparent pl-[11px] pt-[6px] pb-[7px] pr-[9px] focus:outline-none focus:caret-primary"

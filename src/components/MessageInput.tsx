@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   Editable,
@@ -21,7 +21,6 @@ import isHotkey from 'is-hotkey';
 import { withHistory } from 'slate-history';
 import {
   useChannelActionContext,
-  useChannelStateContext,
   useMessageInputContext,
 } from 'stream-chat-react';
 
@@ -62,6 +61,11 @@ type FileInfo = {
   previewUrl?: string;
 };
 
+interface PopupPosition {
+  top: number;
+  left: number;
+}
+
 const HOTKEYS: {
   [key: string]: string;
 } = {
@@ -86,7 +90,6 @@ import Avatar from './Avatar';
 import EmojiPicker from './EmojiPicker';
 
 const MessageInput = () => {
-  const { channel } = useChannelStateContext();
   const { sendMessage } = useChannelActionContext();
   const { uploadNewFiles, attachments, removeAttachments, cooldownRemaining } =
     useMessageInputContext();
@@ -248,16 +251,99 @@ const MessageInput = () => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState<PopupPosition>({ top: 0, left: 0 });
+  const popupRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseUp = () => {
+    const selection = window.getSelection();
+    if (!selection) {
+      setIsVisible(false);
+      return;
+    }
+
+    if (selection.isCollapsed) {
+      setIsVisible(false);
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+
+    if (containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+
+      // 'rect' is in viewport space, so subtract container coordinates
+      const selectionTop = rect.top - containerRect.top;
+      const selectionLeft = rect.left - containerRect.left;
+
+      // Position the popup slightly above the selection
+      setPosition({
+        top: selectionTop - 55,
+        left: selectionLeft - 55,
+      });
+
+      setIsVisible(true);
+    }
+
+    // if (rect) {
+    //   const top = rect.top + window.scrollY;
+    //   const left = rect.left + window.scrollX;
+
+    //   console.log(top, left);
+    //   console.log(window.scrollY, window.scrollX);
+
+    //   setPosition({
+    //     top: top - 800,
+    //     left: left - 620,
+    //   });
+
+    //   setIsVisible(true);
+    // }
+  };
+
   return (
     <Slate editor={editor} initialValue={initialValue}>
       <div className="relative flex items-end gap-2 z-10 mb-5 w-full xl:w-[calc(100%-25vw)] max-w-[45.5rem] px-4 transition-[top,_transform] duration-[200ms,_300ms] ease-[ease,_cubic-bezier(0.33,1,0.68,1)]">
         {/* Input */}
-        <div className="composer-wrapper relative z-[1] grow bg-background max-w-[calc(100%-4rem)] rounded-[var(--border-radius-messages)] rounded-br-none shadow-[0_1px_2px_var(--color-default-shadow)] transition-[transform,_border-bottom-right-radius] duration-200 ease-out">
+        <div
+          ref={containerRef}
+          className="composer-wrapper relative z-[1] grow bg-background max-w-[calc(100%-4rem)] rounded-[var(--border-radius-messages)] rounded-br-none shadow-[0_1px_2px_var(--color-default-shadow)] transition-[transform,_border-bottom-right-radius] duration-200 ease-out"
+        >
           <Appendix position="right" />
           <div className="flex opacity-100 transition-opacity duration-200 ease-out">
-            {/* <button className="relative w-8 h-14 ml-3 flex items-center justify-center leading-[1.2] overflow-hidden transition-colors duration-150 uppercase rounded-full self-end shrink-0 text-color-composer-button">
-              <i className="icon icon-smile" />
-            </button> */}
+            {/* Popup */}
+            {isVisible && (
+              <div
+                ref={popupRef}
+                style={{ top: position.top, left: position.left }}
+                className="absolute z-30 bg-background rounded-[.9375rem] py-2 px-[.375rem] shadow-[0_1px_2px_var(--color-default-shadow)]"
+              >
+                <div
+                  onClick={() => setIsVisible(false)}
+                  className="flex flex-nowrap items-center"
+                >
+                  <FormattingButton type="mark" format="bold" icon="bold" />
+                  <FormattingButton type="mark" format="italic" icon="italic" />
+                  <FormattingButton
+                    type="mark"
+                    format="underline"
+                    icon="underlined"
+                  />
+                  <FormattingButton
+                    type="mark"
+                    format="strikethrough"
+                    icon="strikethrough"
+                  />
+                  <FormattingButton
+                    type="mark"
+                    format="code"
+                    icon="monospace"
+                  />
+                </div>
+              </div>
+            )}
             <EmojiPicker
               buttonClassName="relative w-8 h-14 ml-3 flex items-center justify-center leading-[1.2] overflow-hidden transition-colors duration-150 uppercase rounded-full self-end shrink-0 text-color-composer-button"
               buttonIcon={<i className="icon icon-smile" />}
@@ -266,7 +352,12 @@ const MessageInput = () => {
                 Transforms.insertText(editor, e.native);
               }}
             />
-            <div className="relative grow">
+            <div
+              style={{
+                wordBreak: 'break-word',
+              }}
+              className="relative grow whitespace-pre-wrap"
+            >
               <div className="custom-scroll mr-2 pr-1 min-h-14 max-h-[26rem] overflow-y-auto transition-[height] duration-100 ease-[ease]">
                 <div className="pl-2 py-4">
                   {/* File preview section */}
@@ -318,7 +409,8 @@ const MessageInput = () => {
                   <Editable
                     renderElement={renderElement as never}
                     renderLeaf={renderLeaf}
-                    className="editable outline-none"
+                    onMouseUp={handleMouseUp}
+                    className="editable outline-none leading-[1.3125]"
                     onPaste={handlePaste}
                     spellCheck
                     autoFocus
@@ -496,12 +588,12 @@ const Leaf = ({ attributes, children, leaf }: LeafProps) => {
 interface ButtonProps {
   active?: boolean;
   className?: string;
-  icon: ReactNode;
+  icon: string;
   format: string;
   type?: 'mark' | 'block';
 }
 
-const SlateButton = ({ className, format, icon, type }: ButtonProps) => {
+const FormattingButton = ({ className, format, icon, type }: ButtonProps) => {
   const editor = useSlate();
   const isActive =
     type === 'block'
@@ -511,8 +603,10 @@ const SlateButton = ({ className, format, icon, type }: ButtonProps) => {
   return (
     <button
       className={clsx(
-        'w-7 h-7 p-0.5 m-0.5 inline-flex items-center justify-center rounded',
-        isActive ? 'bg-[#414347] hover:bg-[#4b4c51]' : 'bg-transparent',
+        'w-8 h-8 p-1 text-[1.5rem] text-color-text-secondary leading-[1.2] mx-0.5 shrink-0 flex items-center justify-center rounded-[.375rem] transition-colors duration-150',
+        isActive
+          ? 'bg-interactive-element-hover'
+          : 'bg-transparent hover:bg-interactive-element-hover',
         className
       )}
       onClick={(e) => {
@@ -524,7 +618,7 @@ const SlateButton = ({ className, format, icon, type }: ButtonProps) => {
         }
       }}
     >
-      {icon}
+      <i className={`icon icon-${icon}`} aria-hidden="true" />
     </button>
   );
 };

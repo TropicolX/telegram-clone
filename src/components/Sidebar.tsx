@@ -1,14 +1,11 @@
 'use client';
 import { useState, useEffect, RefObject } from 'react';
-import { UserButton, useUser } from '@clerk/nextjs';
+import clsx from 'clsx';
 
 import Button from './Button';
-import RippleButton from './RippleButton';
-import SearchInput from './SearchInput';
 import ChatFolders from './ChatFolders';
-import useClickOutside from '@/hooks/useClickOutside';
-import clsx from 'clsx';
 import NewGroupView from './NewGroupView';
+import useClickOutside from '@/hooks/useClickOutside';
 
 enum SidebarView {
   Default,
@@ -22,7 +19,6 @@ interface SidebarProps {
 const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
 
 export default function Sidebar({ loading = false }: SidebarProps) {
-  const { user } = useUser();
   const getMaxWidth = () => {
     const windowWidth = window.innerWidth;
     let newMaxWidth = defaultMaxWidth;
@@ -125,20 +121,6 @@ export default function Sidebar({ loading = false }: SidebarProps) {
           view === SidebarView.Default ? 'block' : 'hidden'
         )}
       >
-        <div className="flex items-center bg-background px-[.8125rem] pt-1.5 pb-2 gap-[.625rem] h-[56px]">
-          {user && (
-            <div className="relative h-10 w-10 [&>div:first-child]">
-              <div className="[&>div]:opacity-0">
-                <UserButton />
-              </div>
-              <div className="absolute left-0 top-0 flex items-center justify-center pointer-events-none">
-                <RippleButton icon="menu" />
-              </div>
-            </div>
-          )}
-          {!user && <RippleButton icon="menu" />}
-          <SearchInput value="" onChange={() => null} />
-        </div>
         {!loading && <ChatFolders />}
         {loading && <div>Loading...</div>}
       </div>

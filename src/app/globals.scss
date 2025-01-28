@@ -549,6 +549,29 @@
   content: '•';
 }
 
+#sidebar .str-chat__channel-search {
+  position: absolute;
+  // height: 56px;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+#sidebar .str-chat__channel-list-react .str-chat__channel-list-messenger-react {
+  margin-top: 56px;
+}
+
+#sidebar .str-chat__channel-search-result-list.inline {
+  padding: 0.5rem;
+}
+
+
+#sidebar .str-chat__channel-search-result {
+  border-radius: 0.75rem;
+}
+
+
+
 @keyframes grow-icon {
   0% {
     transform: scale(0.5);

@@ -23,20 +23,19 @@ const DateSeparator = ({ date }: DateSeparatorProps) => {
 
     const isToday = date >= today;
     const isYesterday = date >= yesterday && date < today;
+    const isWithinWeek =
+      date >= new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
 
     if (isToday) {
       return 'Today';
     } else if (isYesterday) {
       return 'Yesterday';
+    } else if (isWithinWeek) {
+      return date.toLocaleDateString('en-US', { weekday: 'long' });
     } else {
-      const options: Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-      };
-      const day = date.getDate();
-      const suffix = getOrdinalSuffix(day);
-      return `${date.toLocaleDateString('en-US', options)}${suffix}`;
+      return `${date.toLocaleDateString('en-US', {
+        month: 'short',
+      })} ${date.getDate()}${getOrdinalSuffix(date.getDate())}`;
     }
   }
 

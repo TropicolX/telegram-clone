@@ -8,18 +8,37 @@ const Messages = () => {
 
   useEffect(() => {
     if (scrollRef.current) {
-      const scrollToBottom = () => {
-        scrollRef.current?.scrollTo({
-          top: scrollRef.current.scrollHeight,
-          behavior: 'smooth',
-        });
+      const scrollToTarget = () => {
+        const unreadSeparator = scrollRef.current?.querySelector(
+          '.str-chat__li.str-chat__unread-messages-separator-wrapper'
+        ) as HTMLDivElement | null;
+
+        if (unreadSeparator) {
+          // Scroll to the unread separator
+          const separatorPosition =
+            unreadSeparator.offsetTop -
+            (scrollRef.current?.offsetTop as number);
+
+          // Scroll to the unread separator
+          scrollRef.current?.scrollTo({
+            top: separatorPosition,
+            behavior: 'smooth',
+          });
+        } else {
+          // Scroll to the bottom if no unread separator exists
+          scrollRef.current?.scrollTo({
+            top: scrollRef.current.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
       };
 
       // MutationObserver to detect changes in the DOM (like new messages added)
-      const observer = new MutationObserver(scrollToBottom);
+      const observer = new MutationObserver(scrollToTarget);
       observer.observe(scrollRef.current, { childList: true, subtree: true });
 
-      scrollToBottom();
+      // Initial scroll
+      scrollToTarget();
 
       // Cleanup observer on component unmount
       return () => observer.disconnect();

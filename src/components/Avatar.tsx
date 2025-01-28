@@ -23,7 +23,7 @@ const Avatar = ({
       // eslint-disable-next-line @next/next/no-img-element
       <img
         style={{ width, height: width, borderRadius }}
-        className="overflow-hidden object-cover"
+        className="overflow-hidden object-cover select-none"
         src={image}
         alt={name}
       />
@@ -38,7 +38,7 @@ const Avatar = ({
         fontWeight,
         backgroundImage: 'linear-gradient(white -300%, var(--accent-color))',
       }}
-      className="shrink-0 aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center overflow-hidden"
+      className="shrink-0 select-none aspect-square uppercase text-white font-sans-serif font-medium flex items-center justify-center overflow-hidden"
     >
       <div className="leading-[2] select-none">{name ? name[0] : ''}</div>
     </div>

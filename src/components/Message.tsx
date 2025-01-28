@@ -92,6 +92,7 @@ const Message = () => {
     return null;
   };
 
+  const isDMChannel = channel?.id?.startsWith('!members');
   const own = isMyMessage();
 
   return (
@@ -185,7 +186,7 @@ const Message = () => {
           </div>
           {own && <Appendix className="hidden" position="right" />}
           {!own && <Appendix className="hidden" />}
-          {!own && (
+          {!own && !isDMChannel && (
             <div className="absolute w-[2.125rem] h-[2.125rem] left-[-2.5rem] bottom-[.0625rem] overflow-hidden">
               <Avatar
                 data={{
