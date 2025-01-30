@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { Channel as ChannelType } from 'stream-chat';
+import { useParams, useRouter } from 'next/navigation';
+import { ChannelMemberResponse, Channel as ChannelType } from 'stream-chat';
 import {
   Channel,
   DefaultStreamChatGenerics,
@@ -10,7 +10,6 @@ import {
   Window,
 } from 'stream-chat-react';
 import { useUser } from '@clerk/nextjs';
-// import { useCalls } from '@stream-io/video-react-sdk';
 
 import Appendix from '@/components/Appendix';
 import Avatar from '@/components/Avatar';
@@ -21,37 +20,40 @@ import Input from '@/components/MessageInput';
 import Messages from '@/components/Messages';
 import RippleButton from '@/components/RippleButton';
 import { getLastSeen } from '@/lib/utils';
+import {
+  Call,
+  MemberRequest,
+  useStreamVideoClient,
+} from '@stream-io/video-react-sdk';
+import { Video } from '../../../components/Video';
 
 const Chat = () => {
   const { channelId } = useParams<{ channelId: string }>();
-  // const router = useRouter();
+  const router = useRouter();
   const { user } = useUser();
-  // const [currentCall] = useCalls();
   const { client: chatClient } = useChatContext();
+  const videoClient = useStreamVideoClient();
 
   const [chatChannel, setChatChannel] =
     useState<ChannelType<DefaultStreamChatGenerics>>();
+  const [channelCall, setChannelCall] = useState<Call>();
   const [loading, setLoading] = useState(true);
+
+  const disableCreateCall = !channelCall;
 
   useEffect(() => {
     const loadChannel = async () => {
       const chatChannel = chatClient.channel('messaging', channelId);
+      await chatChannel.watch();
 
-      await chatChannel.create();
-
-      // if (currentCall?.id === channelId) {
-      //   setChannelCall(currentCall);
-      // } else {
-      //   const channelCall = videoClient?.call('default', channelId);
-      //   setChannelCall(channelCall);
-      // }
-
+      const channelCall = videoClient?.call('default', channelId);
+      setChannelCall(channelCall);
       setChatChannel(chatChannel);
       setLoading(false);
     };
 
     if (chatClient && !chatChannel) loadChannel();
-  }, [channelId, chatChannel, chatClient]);
+  }, [channelId, chatChannel, chatClient, router, videoClient]);
 
   const isDMChannel = useMemo(
     () => chatChannel?.id?.startsWith('!members'),
@@ -94,6 +96,29 @@ const Chat = () => {
       return chatChannel?.data?.member_count?.toLocaleString() + ' members';
     }
   }, [chatChannel, user, isDMChannel, getDMUser]);
+
+  const initiateCall = useCallback(() => {
+    const initialMembers = chatChannel?.state.members as Record<
+      string,
+      ChannelMemberResponse<DefaultStreamChatGenerics>
+    >;
+    const members = Object.values(initialMembers).map<MemberRequest>(
+      (member) => ({
+        user_id: member.user?.id as string,
+      })
+    );
+
+    channelCall?.getOrCreate({
+      ring: true,
+      data: {
+        custom: {
+          channelCid: chatChannel?.cid,
+          channelName: getChatName(),
+        },
+        members,
+      },
+    });
+  }, [channelCall, chatChannel?.cid, chatChannel?.state.members, getChatName]);
 
   if (loading)
     return (
@@ -186,7 +211,11 @@ const Chat = () => {
         {/* Actions */}
         <div className="flex gap-1">
           <RippleButton icon="search" />
-          <RippleButton icon="phone" />
+          <RippleButton
+            icon="phone"
+            onClick={initiateCall}
+            disabled={disableCreateCall}
+          />
           <RippleButton icon="more" />
         </div>
       </div>
@@ -202,6 +231,7 @@ const Chat = () => {
               <Messages />
               <MessageInput Input={Input} />
             </Window>
+            <Video />
           </Channel>
         </div>
       </div>

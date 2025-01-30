@@ -1,8 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
+  Attachment,
+  MessageActions,
   messageHasAttachments,
+  messageHasReactions,
   MessageText,
+  ReactionsList,
   renderText,
   useChannelStateContext,
   useMessageContext,
@@ -15,9 +19,54 @@ import EmojiPicker from './EmojiPicker';
 import Avatar from './Avatar';
 
 const Message = () => {
-  const { message, messageIsUnread, isMyMessage } = useMessageContext();
+  const { message, isMyMessage, handleAction, readBy, handleRetry } =
+    useMessageContext();
   const { channel } = useChannelStateContext('ChannelMessage');
   const { user } = useUser();
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  const hasReactions = messageHasReactions(message);
+  const isDMChannel = channel?.id?.startsWith('!members');
+  const own = isMyMessage();
+  const createdAt = new Date(message.created_at!).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: false,
+  });
+
+  const justReadByMe =
+    readBy?.length === 0 || (readBy?.length === 1 && readBy[0].id === user?.id);
+  const sending = message.status === 'sending';
+  const delivered = message.status === 'received';
+  const deliveredAndRead = delivered && !justReadByMe;
+  const allowRetry =
+    message.status === 'failed' && message.errorStatusCode !== 403;
+
+  const handleClick = () => {
+    if (allowRetry) {
+      handleRetry(message);
+    }
+  };
+
+  useEffect(() => {
+    if (!own || !deliveredAndRead) return;
+
+    const message = messageRef.current;
+    if (message) {
+      const parentLi = message?.parentElement;
+      let lastLi = parentLi?.previousElementSibling as HTMLElement;
+
+      while (lastLi) {
+        const status = lastLi.querySelector('.delivery-status');
+        if (status) {
+          status.classList.add('icon-message-read');
+          status.classList.remove('icon-message-succeeded');
+        }
+
+        lastLi = lastLi.previousElementSibling as HTMLElement;
+      }
+    }
+  }, [deliveredAndRead, own]);
 
   const reactionCounts = useMemo(() => {
     if (!message.reaction_groups) {
@@ -46,21 +95,6 @@ const Message = () => {
         }, {} as Record<string, { count: number; reacted: boolean }>)
     );
   }, [message.reaction_groups, message.own_reactions, user]);
-
-  const createdAt = new Date(message.created_at!).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: false,
-  });
-
-  const downloadFile = async (url: string) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = url.split('/').pop()!;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   const handleReaction = async (e: { id: string; native?: string }) => {
     await channel.sendReaction(message.id, { type: e.id });
@@ -92,68 +126,31 @@ const Message = () => {
     return null;
   };
 
-  const isDMChannel = channel?.id?.startsWith('!members');
-  const own = isMyMessage();
-
   return (
-    <div className={clsx('message', own && 'own')}>
+    <div
+      ref={messageRef}
+      onClick={handleClick}
+      className={clsx('message', own && 'own')}
+    >
       <div className="content-wrapper">
         <div className="message-content relative max-w-[var(--max-width)] bg-[var(--background-color)] shadow-[0_1px_2px_var(--color-default-shadow)] p-[.3125rem_.5rem_.375rem] text-[15px]">
           <div className="content-inner min-w-0">
             <div className="break-words whitespace-pre-wrap leading-[1.3125] block rounded-[.25rem] relative overflow-clip">
+              {/* <MessageActions  /> */}
               <div
                 className={clsx(
                   message.attachments && message.attachments.length > 0
                     ? 'flex'
                     : 'hidden',
-                  'mt-3 flex-col gap-2'
+                  'mt-1 mb-1.5 flex-col gap-2'
                 )}
               >
-                {message.attachments?.map((attachment) => (
-                  <div
-                    key={
-                      attachment?.id ||
-                      attachment.image_url ||
-                      attachment.asset_url
-                    }
-                    className={clsx(
-                      'group/attachment relative cursor-pointer flex items-center rounded-xl gap-3 border border-[#d6d6d621] bg-[#1a1d21]',
-                      attachment?.image_url && !attachment.asset_url
-                        ? 'max-w-[360px] p-0'
-                        : 'max-w-[426px] p-3'
-                    )}
-                  >
-                    {attachment.asset_url && (
-                      <>
-                        <Avatar
-                          width={32}
-                          borderRadius={8}
-                          data={{
-                            name: attachment!.title!,
-                            image: attachment!.image_url!,
-                          }}
-                        />
-                        <div className="flex flex-col gap-0.5">
-                          <p className="text-sm text-[#d1d2d3] break-all whitespace-break-spaces line-clamp-1 mr-2">
-                            {attachment.title || `attachment`}
-                          </p>
-                          <p className="text-[13px] text-[#ababad] break-all whitespace-break-spaces line-clamp-1">
-                            {attachment.type}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                    {attachment.image_url && !attachment.asset_url && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={attachment.image_url}
-                        alt="attachment"
-                        className="w-full max-h-[358px] aspect-auto rounded-lg"
-                      />
-                    )}
-                    {/* Message Actions */}
-                  </div>
-                ))}
+                {message.attachments?.length && !message.quoted_message ? (
+                  <Attachment
+                    actionHandler={handleAction}
+                    attachments={message.attachments}
+                  />
+                ) : null}
               </div>
               <MessageText
                 renderText={(text, mentionedUsers) =>
@@ -173,12 +170,24 @@ const Message = () => {
                   !own && 'text-[#686c72bf]'
                 )}
               >
+                <div className="str-chat__message-reactions-host">
+                  {hasReactions && <ReactionsList reverse />}
+                </div>
                 <div className="mr-1 text-[.75rem] whitespace-nowrap">
                   {createdAt}
                 </div>
                 {own && (
-                  <div className="w-[1.1875rem] h-[1.1875rem] overflow-hidden inline-block leading-[1] text-accent-own ml-[-0.1875rem] rounded-[.625rem] shrink-0">
-                    <i className="icon icon-message-succeeded pl-[.125rem] text-[1.1875rem]" />
+                  <div className="overflow-hidden inline-block leading-[1] text-accent-own ml-[-0.1875rem] rounded-[.625rem] shrink-0">
+                    <i
+                      className={clsx(
+                        'delivery-status icon pl-[.125rem] text-[1.1875rem]',
+                        sending && 'icon-message-pending',
+                        delivered &&
+                          !deliveredAndRead &&
+                          'icon-message-succeeded',
+                        deliveredAndRead && 'icon-message-read'
+                      )}
+                    />
                   </div>
                 )}
               </div>
@@ -187,7 +196,7 @@ const Message = () => {
           {own && <Appendix className="hidden" position="right" />}
           {!own && <Appendix className="hidden" />}
           {!own && !isDMChannel && (
-            <div className="absolute w-[2.125rem] h-[2.125rem] left-[-2.5rem] bottom-[.0625rem] overflow-hidden">
+            <div className="message-dp absolute w-[2.125rem] h-[2.125rem] left-[-2.5rem] bottom-[.0625rem] overflow-hidden">
               <Avatar
                 data={{
                   name: message.user?.name as string,

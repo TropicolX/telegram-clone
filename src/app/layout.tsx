@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 
 import '@stream-io/video-react-sdk/dist/css/styles.css';
-// import 'stream-chat-react/dist/css/v2/index.css';
 import './globals.scss';
 
 export const metadata: Metadata = {
