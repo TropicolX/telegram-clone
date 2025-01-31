@@ -107,7 +107,7 @@ export default function Sidebar() {
     <div
       id="sidebar"
       style={{ width: `${width}px` }}
-      className="group bg-background h-full flex-shrink-0 relative"
+      className="max-[600px]:!w-full max-[925px]:!w-[26.5rem] w-auto group bg-background h-full flex-shrink-0 relative"
       onMouseLeave={() => setMenuOpen(false)}
     >
       {/* Default View */}
@@ -172,7 +172,7 @@ export default function Sidebar() {
       </div>
       {/* Resize Handle */}
       <div
-        className="absolute z-20 top-0 -right-1 h-full w-2 cursor-ew-resize"
+        className="hidden lg:block absolute z-20 top-0 -right-1 h-full w-2 cursor-ew-resize"
         onMouseDown={handleResize}
       />
     </div>

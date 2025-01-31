@@ -1,11 +1,13 @@
 'use client';
 import { ReactNode, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
 import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
+import clsx from 'clsx';
 
-import PageLoading from '../../components/PageLoading';
+import PageLoading from '@/components/PageLoading';
 import Sidebar from '@/components/Sidebar';
 
 interface LayoutProps {
@@ -31,6 +33,7 @@ export default function Layout({ children }: LayoutProps) {
   const [loading, setLoading] = useState(true);
   const [chatClient, setChatClient] = useState<StreamChat>();
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
+  const { channelId } = useParams<{ channelId?: string }>();
 
   useEffect(() => {
     const customProvider = async () => {
@@ -74,9 +77,17 @@ export default function Layout({ children }: LayoutProps) {
       <StreamVideo client={videoClient!}>
         <div className="flex h-full w-full">
           <Sidebar />
-          <div className="relative flex flex-col items-center w-full h-full overflow-hidden border-l border-solid border-l-color-borders">
-            <div className="chat-background absolute top-0 left-0 w-full h-full -z-10 overflow-hidden bg-theme-background"></div>
-            {children}
+          <div
+            className={clsx(
+              'fixed max-w-none left-0 right-0 top-0 bottom-0 lg:relative flex w-full h-full justify-center z-[1] min-w-0',
+              !channelId &&
+                'translate-x-[100vw] min-[601px]:translate-x-[26.5rem] lg:translate-x-0'
+            )}
+          >
+            <div className="relative flex flex-col items-center w-full h-full overflow-hidden border-l border-solid border-l-color-borders">
+              <div className="chat-background absolute top-0 left-0 w-full h-full -z-10 overflow-hidden bg-theme-background"></div>
+              {children}
+            </div>
           </div>
         </div>
       </StreamVideo>

@@ -157,9 +157,15 @@ const Chat = () => {
 
   return (
     <>
-      <div className="flex items-center w-full bg-background relative z-10 py-1 pl-[23px] pr-[13px] shrink-0 h-[3.5rem]">
+      <div className="flex items-center px-2 w-full bg-background relative z-10 py-1 md:pl-[23px] md:pr-[13px] shrink-0 h-[3.5rem]">
         {/* Chat Info */}
-        <div className="grow overflow-hidden">
+        <div className="flex grow overflow-hidden gap-2">
+          <div className="lg:hidden [&>button]:pe-2">
+            <RippleButton
+              icon="arrow-left text-3xl ml-1"
+              onClick={() => router.push('/a')}
+            />
+          </div>
           <div className="flex items-center cursor-pointer py-[.0625rem] pl-[.0625rem]">
             {/* Avatar */}
             <div className="w-10 h-10 mr-[.625rem] text-[1.0625rem]">
@@ -184,6 +190,16 @@ const Chat = () => {
             </div>
           </div>
         </div>
+        {/* Actions */}
+        <div className="flex gap-1">
+          <RippleButton icon="search" />
+          <RippleButton
+            icon="phone"
+            onClick={initiateCall}
+            disabled={disableCreateCall}
+          />
+          <RippleButton icon="more" />
+        </div>
         {/* Active Call */}
         {callActive && (
           <div className="absolute top-[3.5rem] left-0 w-full z-[11] before:content-[''] before:absolute before:-top-0.5 before:h-0.5 before:left-0 before:right-0 before:z-[-100] before:shadow-[0_2px_2px_var(--color-light-shadow)]">
@@ -200,16 +216,6 @@ const Chat = () => {
             </div>
           </div>
         )}
-        {/* Actions */}
-        <div className="flex gap-1">
-          <RippleButton icon="search" />
-          <RippleButton
-            icon="phone"
-            onClick={initiateCall}
-            disabled={disableCreateCall}
-          />
-          <RippleButton icon="more" />
-        </div>
       </div>
       <div id="channel" className="relative w-full h-full overflow-hidden">
         <div className="flex flex-col grow items-center w-full h-full">

@@ -50,7 +50,7 @@ const EmojiPicker = ({
           ref={setPopperElement}
           {...attributes.popper}
           style={styles.popper}
-          className="z-50"
+          className="z-[60]"
         >
           <Picker
             data={(emojiData as { default: object }).default}

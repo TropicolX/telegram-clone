@@ -20,7 +20,7 @@ const ChatFolders = ({}: ChannelSearchProps) => {
       <div className="flex flex-col w-full h-full overflow-hidden">
         <div className="flex-1 overflow-hidden relative w-full h-full">
           <div className="w-full h-full">
-            <div className="custom-scroll p-2 overflow-y-scroll overflow-x-hidden h-full bg-background pe-[0px]">
+            <div className="custom-scroll p-2 overflow-y-scroll overflow-x-hidden h-full bg-background pe-2 min-[820px]:pe-[0px]">
               <ChannelList
                 Preview={ChatPreview}
                 sort={{

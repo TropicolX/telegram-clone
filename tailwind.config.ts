@@ -8,6 +8,10 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        lg: '926px',
+        sm: '560px',
+      },
       backgroundImage: {
         'ringing-gradient':
           'linear-gradient(#ffffff -300%, var(--color-primary))',
@@ -20,6 +24,8 @@ export default {
         'primary-shade': 'var(--color-primary-shade)',
         background: 'var(--color-background)',
         'background-compact-menu': 'var(--color-background-compact-menu)',
+        'background-compact-menu-hover':
+          'var(--color-background-compact-menu-hover)',
         'background-secondary': 'var(--color-background-secondary)',
         'background-own': 'var(--color-background-own)',
         'background-selected': 'var(--color-background-selected)',

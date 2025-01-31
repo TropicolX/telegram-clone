@@ -1,12 +1,16 @@
-import { useEffect, useMemo, useRef } from 'react';
+import {
+  MouseEvent,
+  RefObject,
+  TouchEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useUser } from '@clerk/nextjs';
 import {
   Attachment,
-  MessageActions,
-  messageHasAttachments,
-  messageHasReactions,
   MessageText,
-  ReactionsList,
   renderText,
   useChannelStateContext,
   useMessageContext,
@@ -17,15 +21,27 @@ import emojiData from '@emoji-mart/data';
 import Appendix from './Appendix';
 import EmojiPicker from './EmojiPicker';
 import Avatar from './Avatar';
+import useClickOutside from '../hooks/useClickOutside';
+import useIsMobile from '../hooks/useIsMobile';
+import useClampPopup from '../hooks/useClampPopup';
 
 const Message = () => {
   const { message, isMyMessage, handleAction, readBy, handleRetry } =
     useMessageContext();
   const { channel } = useChannelStateContext('ChannelMessage');
   const { user } = useUser();
-  const messageRef = useRef<HTMLDivElement>(null);
+  const messageRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const popupRef = useClickOutside(() => {
+    setShowPopup(false);
+  }) as RefObject<HTMLDivElement>;
+  const isMobile = useIsMobile();
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupPosition, setPopupPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  const hasReactions = messageHasReactions(message);
   const isDMChannel = channel?.id?.startsWith('!members');
   const own = isMyMessage();
   const createdAt = new Date(message.created_at!).toLocaleTimeString('en-US', {
@@ -33,7 +49,6 @@ const Message = () => {
     minute: '2-digit',
     hour12: false,
   });
-
   const justReadByMe =
     readBy?.length === 0 || (readBy?.length === 1 && readBy[0].id === user?.id);
   const sending = message.status === 'sending';
@@ -42,11 +57,13 @@ const Message = () => {
   const allowRetry =
     message.status === 'failed' && message.errorStatusCode !== 403;
 
-  const handleClick = () => {
-    if (allowRetry) {
-      handleRetry(message);
-    }
-  };
+  useClampPopup({
+    wrapperRef,
+    popupRef,
+    showPopup,
+    popupPosition,
+    setPopupPosition,
+  });
 
   useEffect(() => {
     if (!own || !deliveredAndRead) return;
@@ -62,11 +79,16 @@ const Message = () => {
           status.classList.add('icon-message-read');
           status.classList.remove('icon-message-succeeded');
         }
-
         lastLi = lastLi.previousElementSibling as HTMLElement;
       }
     }
-  }, [deliveredAndRead, own]);
+  }, [deliveredAndRead, messageRef, own]);
+
+  const handleClick = () => {
+    if (allowRetry) {
+      handleRetry(message);
+    }
+  };
 
   const reactionCounts = useMemo(() => {
     if (!message.reaction_groups) {
@@ -126,13 +148,68 @@ const Message = () => {
     return null;
   };
 
+  const handleMobileTap = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isMobile) return;
+    if (showPopup) return setShowPopup(false);
+
+    const touch = e.touches[0];
+    setPopupPosition({ x: touch.pageX, y: touch.pageY });
+    setShowPopup(true);
+  };
+
+  const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+
+    e.preventDefault();
+    if (showPopup) return setShowPopup(false);
+
+    const containerRect =
+      messageRef?.current?.getBoundingClientRect() as DOMRect;
+    const top = e.clientY - containerRect.top + 10;
+    const left = e.clientX - containerRect.left + 10;
+
+    setPopupPosition({ x: left, y: top });
+    setShowPopup(true);
+  };
+
   return (
     <div
       ref={messageRef}
       onClick={handleClick}
-      className={clsx('message', own && 'own')}
+      className={clsx(
+        'message before:absolute before:bg-[#4A8E3A8C] before:top-[-0.1875rem] before:bottom-[-0.1875rem] before:left-[-50vw] before:right-[-50vw] before:z-0 before:transition-opacity before:duration-200 before:ease-out',
+        showPopup ? 'before:opacity-55' : 'before:opacity-0',
+        own && 'own'
+      )}
+      onTouchStart={isMobile ? handleMobileTap : undefined}
+      onContextMenu={!isMobile ? handleContextMenu : undefined}
     >
-      <div className="content-wrapper">
+      <div ref={wrapperRef} className="relative content-wrapper">
+        {/* Popup */}
+        {showPopup && (
+          <div
+            ref={popupRef}
+            className="absolute flex flex-col w-[200px] py-1 z-10 bg-background-compact-menu backdrop-blur-[10px] shadow-[0_.25rem_.5rem_.125rem_var(--color-default-shadow)] rounded-xl"
+            style={{ top: popupPosition.y, left: popupPosition.x }}
+          >
+            <EmojiPicker
+              buttonIcon={
+                <>
+                  <i className="icon icon-smile" />
+                  Add reaction
+                </>
+              }
+              wrapperClassName="contents"
+              buttonClassName="flex grow relative items-center whitespace-nowrap hover:bg-background-compact-menu-hover text-black text-sm leading-6 mx-1 my-[.125rem] p-1 pe-3 rounded-[.375rem] font-medium [&>i]:max-w-5 [&>i]:text-[1.25rem] [&>i]:ms-2 [&>i]:me-[1.25rem] [&>i]:mr-4 [&>i]:text-[#707579]"
+              onEmojiSelect={handleReaction}
+            />
+            <MenuItem label="Reply" icon="reply" />
+            <MenuItem label="Copy Text" icon="copy" />
+            <MenuItem label="Forward" icon="forward" />
+            <MenuItem label="Select" icon="select" />
+            <MenuItem label="Report" icon="flag" />
+          </div>
+        )}
         <div className="message-content relative max-w-[var(--max-width)] bg-[var(--background-color)] shadow-[0_1px_2px_var(--color-default-shadow)] p-[.3125rem_.5rem_.375rem] text-[15px]">
           <div className="content-inner min-w-0">
             <div className="break-words whitespace-pre-wrap leading-[1.3125] block rounded-[.25rem] relative overflow-clip">
@@ -141,7 +218,7 @@ const Message = () => {
                   message.attachments && message.attachments.length > 0
                     ? 'flex'
                     : 'hidden',
-                  'mt-1 mb-1.5 flex-col gap-2'
+                  'mt-1 mb-1.5 flex-col gap-2 [&>div]:max-w-[315px] sm:[&>div]:max-w-none'
                 )}
               >
                 {message.attachments?.length && !message.quoted_message ? (
@@ -162,16 +239,48 @@ const Message = () => {
                 customWrapperClass="contents"
                 customInnerClass="contents [&>*]:contents [&>*>*]:contents"
               />
+              {reactionCounts.length > 0 && (
+                <div className="flex-shrink flex items-center gap-1 flex-wrap mt-2 mr-[62px]">
+                  {reactionCounts.map(([reactionType, data], index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        handleReactionClick(reactionType, data.reacted)
+                      }
+                      className={clsx(
+                        'px-2 mb-1 h-[30px] flex items-center gap-1.5 border text-[11.8px] rounded-full transition-colors',
+                        data.reacted &&
+                          own &&
+                          'text-white bg-[#45af54] border-[#45af54] hover:bg-[#3f9d4b] hover:border-[#3f9d4b]',
+                        !data.reacted &&
+                          own &&
+                          'text-[#45af54] bg-[#c6eab2] border-[#c6eab2] hover:bg-[#b5e0a4] hover:border-[#b5e0a4]',
+                        data.reacted &&
+                          !own &&
+                          'text-white bg-[#3390ec] border-[#3390ec] hover:bg-[#1a82ea] hover:border-[#1a82ea]',
+                        !data.reacted &&
+                          !own &&
+                          'text-[#3390ec] bg-[#ebf3fd] border-[#ebf3fd] hover:bg-[#c5def9] hover:border-[#c5def9]'
+                      )}
+                    >
+                      <span className="emoji text-[16px] mt-[1px]">
+                        {getReactionEmoji(reactionType)}
+                      </span>{' '}
+                      <span className="text-sm font-medium whitespace-pre">
+                        {data.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
               <div
                 className={clsx(
                   'relative top-[.375rem] bottom-auto right-0 flex items-center rounded-[.625rem] px-1 cursor-pointer select-none float-right leading-[1.35] h-[19px] ml-[.4375rem] mr-[-0.375rem]',
                   own && 'text-message-meta-own',
-                  !own && 'text-[#686c72bf]'
+                  !own && 'text-[#686c72bf]',
+                  reactionCounts.length > 0 && '-mt-5'
                 )}
               >
-                <div className="str-chat__message-reactions-host">
-                  {hasReactions && <ReactionsList reverse />}
-                </div>
                 <div className="mr-1 text-[.75rem] whitespace-nowrap">
                   {createdAt}
                 </div>
@@ -208,6 +317,24 @@ const Message = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+interface MenuItem {
+  label: string;
+  onClick?: () => void;
+  icon: string;
+}
+
+const MenuItem = ({ label, onClick, icon }: MenuItem) => {
+  return (
+    <button
+      onClick={onClick}
+      className="flex grow relative items-center whitespace-nowrap hover:bg-background-compact-menu-hover text-black text-sm leading-6 mx-1 my-[.125rem] p-1 pe-3 rounded-[.375rem] font-medium [&>i]:max-w-5 [&>i]:text-[1.25rem] [&>i]:ms-2 [&>i]:me-[1.25rem] [&>i]:mr-4 [&>i]:text-[#707579]"
+    >
+      <i className={`icon icon-${icon}`} />
+      {label}
+    </button>
   );
 };
 

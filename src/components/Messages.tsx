@@ -24,18 +24,12 @@ const Messages = () => {
             top: separatorPosition,
             behavior: 'smooth',
           });
-        } else {
-          // Scroll to the bottom if no unread separator exists
-          scrollRef.current?.scrollTo({
-            top: scrollRef.current.scrollHeight,
-            behavior: 'smooth',
-          });
         }
       };
 
       // MutationObserver to detect changes in the DOM (like new messages added)
       const observer = new MutationObserver(scrollToTarget);
-      observer.observe(scrollRef.current, { childList: true, subtree: true });
+      observer.observe(scrollRef.current, { childList: true });
 
       // Initial scroll
       scrollToTarget();
@@ -48,7 +42,7 @@ const Messages = () => {
   return (
     <div
       ref={scrollRef}
-      className="custom-scroll flex-1 w-full mb-2 overflow-y-scroll overflow-x-hidden transition-[bottom,_transform] duration-[150ms,_300ms] ease-[ease-out,_cubic-bezier(0.33,1,0.68,1)] xl:transition-transform xl:duration-300 xl:ease-[cubic-bezier(0.33,1,0.68,1)]"
+      className="custom-scroll px-8 xl:px-0 flex-1 w-full mb-2 overflow-y-scroll overflow-x-hidden transition-[bottom,_transform] duration-[150ms,_300ms] ease-[ease-out,_cubic-bezier(0.33,1,0.68,1)] xl:transition-transform xl:duration-300 xl:ease-[cubic-bezier(0.33,1,0.68,1)]"
     >
       <div className="flex flex-col justify-end mx-auto min-h-full w-full xl:w-[calc(100%-25vw)] max-w-[45.5rem] pt-4 pr-4 pl-[1.125rem]">
         <MessageList Message={Message} />

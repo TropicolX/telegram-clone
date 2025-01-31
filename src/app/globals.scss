@@ -562,7 +562,6 @@ body {
   padding: 0.5rem;
 }
 
-
 #sidebar .str-chat__channel-search-result {
   border-radius: 0.75rem;
 }
@@ -577,6 +576,11 @@ body {
 
 #channel .str-chat__attachment-list .str-chat__message-attachment-download-icon path {
   fill: #0a0f316e
+}
+
+.emoji {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
 }
 
 .str-video__participant-view .str-video__participant-details {
