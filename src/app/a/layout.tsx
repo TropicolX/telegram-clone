@@ -5,6 +5,7 @@ import { StreamChat } from 'stream-chat';
 import { Chat } from 'stream-chat-react';
 import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-sdk';
 
+import PageLoading from '../../components/PageLoading';
 import Sidebar from '@/components/Sidebar';
 
 interface LayoutProps {
@@ -66,13 +67,13 @@ export default function Layout({ children }: LayoutProps) {
     if (user) setUpChatAndVideo();
   }, [user, videoClient, chatClient]);
 
-  if (loading) return <div className="flex h-full w-full">Loading...</div>;
+  if (loading) return <PageLoading />;
 
   return (
     <Chat client={chatClient!}>
       <StreamVideo client={videoClient!}>
         <div className="flex h-full w-full">
-          <Sidebar loading={false} />
+          <Sidebar />
           <div className="relative flex flex-col items-center w-full h-full overflow-hidden border-l border-solid border-l-color-borders">
             <div className="chat-background absolute top-0 left-0 w-full h-full -z-10 overflow-hidden bg-theme-background"></div>
             {children}

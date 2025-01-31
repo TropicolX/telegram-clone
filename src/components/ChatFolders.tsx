@@ -8,6 +8,7 @@ import {
 
 import ChatPreview from './ChatPreview';
 import SearchBar from './SearchBar';
+import Spinner from './Spinner';
 
 const ChatFolders = ({}: ChannelSearchProps) => {
   const { user } = useUser();
@@ -44,7 +45,13 @@ const ChatFolders = ({}: ChannelSearchProps) => {
                   },
                   SearchBar: SearchBar,
                 }}
-                LoadingIndicator={() => null}
+                LoadingIndicator={() => (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="relative w-12 h-12">
+                      <Spinner color="var(--color-primary)" />
+                    </div>
+                  </div>
+                )}
               />
             </div>
           </div>

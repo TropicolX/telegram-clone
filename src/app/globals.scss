@@ -4,440 +4,428 @@
 @tailwind utilities;
 @import "~stream-chat-react/dist/scss/v2/index.scss";
 
-@layer base {
-  :root {
-    --composer-text-size: 15px;
-    --message-meta-height: 19px;
-    --message-text-size: 15px;
-    --color-primary: rgb(51, 144, 236);
-    --color-primary-opacity: rgb(80, 162, 233, 0.118);
-    --color-primary-opacity-hover: rgb(80, 162, 233, 0.251);
-    --color-primary-tint: rgb(51, 144, 236, 0.102);
-    --color-primary-shade: rgb(74, 149, 214);
-    --color-primary-shade-rgb: 74, 149, 214;
-    --color-background: rgb(255, 255, 255);
-    --color-background-compact-menu: rgb(255, 255, 255, 0.733);
-    --color-web-app-browser: rgb(255, 255, 255, 0.733);
-    --color-background-compact-menu-reactions: rgb(255, 255, 255, 0.922);
-    --color-background-compact-menu-hover: rgb(0, 0, 0, 0.067);
-    --color-background-secondary: rgb(244, 244, 245);
-    --color-background-secondary-accent: rgb(228, 228, 229);
-    --color-background-own: rgb(238, 255, 222);
-    --color-background-own-apple: rgb(220, 248, 197);
-    --color-background-selected: rgb(244, 244, 245);
-    --color-background-own-selected: rgb(208, 255, 172);
-    --color-chat-hover: rgb(244, 244, 245);
-    --color-chat-active: rgb(51, 144, 236);
-    --color-chat-active-greyed: rgb(96, 167, 240);
-    --color-item-hover: rgb(244, 244, 245);
-    --color-item-active: rgb(237, 237, 237);
-    --color-text: rgb(0, 0, 0);
-    --color-text-rgb: 0, 0, 0;
-    --color-text-secondary: rgb(112, 117, 121);
-    --color-text-secondary-rgb: 112, 117, 121;
-    --color-icon-secondary: rgb(112, 117, 121);
-    --color-text-secondary-apple: rgb(142, 142, 146);
-    --color-borders: rgb(218, 220, 224);
-    --color-borders-input: rgb(218, 220, 224);
-    --color-dividers: rgb(200, 198, 204);
-    --color-dividers-android: rgb(231, 231, 231);
-    --color-links: rgb(51, 144, 236);
-    --color-gray: rgb(196, 201, 204);
-    --color-list-icon: rgb(171, 175, 177);
-    --color-default-shadow: rgb(114, 114, 114, 0.251);
-    --color-light-shadow: rgb(114, 114, 114, 0.169);
-    --color-green: rgb(0, 199, 62);
-    --color-green-darker: rgb(0, 167, 52);
-    --color-success: rgb(0, 199, 62);
-    --color-text-meta-colored: rgb(77, 205, 94);
-    --color-reply-hover: rgb(244, 244, 244);
-    --color-reply-active: rgb(232, 233, 233);
-    --color-reply-own-hover: rgb(217, 245, 206);
-    --color-reply-own-hover-apple: rgb(203, 239, 183);
-    --color-reply-own-active: rgb(197, 236, 190);
-    --color-reply-own-active-apple: rgb(186, 230, 168);
-    --color-accent-own: rgb(69, 175, 84);
-    --color-accent-own-rgb: 69, 175, 84;
-    --color-message-meta-own: rgb(79, 174, 78, 1);
-    --color-own-links: rgb(51, 144, 236);
-    --color-code: rgb(74, 114, 154);
-    --color-code-own: rgb(60, 121, 64);
-    --color-code-bg: rgb(112, 117, 121, 0.078);
-    --color-code-own-bg: rgb(112, 117, 121, 0.078);
-    --color-composer-button: rgb(112, 117, 121, 0.8);
-    --color-message-reaction: rgb(235, 243, 253);
-    --color-message-reaction-hover: rgb(197, 222, 249);
-    --color-message-reaction-own: rgb(198, 234, 178);
-    --color-message-reaction-hover-own: rgb(181, 224, 164);
-    --color-message-reaction-chosen-hover: rgb(26, 130, 234);
-    --color-message-reaction-chosen-hover-own: rgb(63, 157, 75);
-    --color-voice-transcribe-button: rgb(232, 243, 255);
-    --color-voice-transcribe-button-own: rgb(204, 238, 191);
-    --color-topic-blue: rgb(47, 119, 114);
-    --color-topic-yellow: rgb(127, 105, 59);
-    --color-topic-violet: rgb(139, 90, 150);
-    --color-topic-green: rgb(68, 119, 74);
-    --color-topic-rose: rgb(155, 87, 107);
-    --color-topic-red: rgb(235, 104, 88);
-    --color-topic-grey: rgb(108, 108, 108);
-    --color-forum-unread-topic-hover: rgb(233, 233, 233);
-    --color-forum-hover-unread-topic-hover: rgb(226, 226, 226);
-    --color-chat-username: rgb(60, 126, 176);
-    --color-borders-read-story: rgb(196, 201, 204);
-    --color-background-menu-separator: rgb(0, 0, 0, 0.102);
-    --color-hover-overlay: rgb(0, 0, 0, 0.024);
-    --input-custom-emoji-filter: url(#color-filter-000000);
-    --color-peer-7: #e15052;
-    --color-peer-bg-7: #e150521a;
-    --color-peer-bg-active-7: #e150522b;
-    --color-peer-gradient-7: repeating-linear-gradient(-45deg, #e15052 0px, #e15052 5px, #f9ae63 5px, #f9ae63 10px);
-    --color-peer-8: #e0802b;
-    --color-peer-bg-8: #e0802b1a;
-    --color-peer-bg-active-8: #e0802b2b;
-    --color-peer-gradient-8: repeating-linear-gradient(-45deg, #e0802b 0px, #e0802b 5px, #fac534 5px, #fac534 10px);
-    --color-peer-9: #a05ff3;
-    --color-peer-bg-9: #a05ff31a;
-    --color-peer-bg-active-9: #a05ff32b;
-    --color-peer-gradient-9: repeating-linear-gradient(-45deg, #a05ff3 0px, #a05ff3 5px, #f48fff 5px, #f48fff 10px);
-    --color-peer-10: #27a910;
-    --color-peer-bg-10: #27a9101a;
-    --color-peer-bg-active-10: #27a9102b;
-    --color-peer-gradient-10: repeating-linear-gradient(-45deg, #27a910 0px, #27a910 5px, #a7dc57 5px, #a7dc57 10px);
-    --color-peer-11: #27acce;
-    --color-peer-bg-11: #27acce1a;
-    --color-peer-bg-active-11: #27acce2b;
-    --color-peer-gradient-11: repeating-linear-gradient(-45deg, #27acce 0px, #27acce 5px, #82e8d6 5px, #82e8d6 10px);
-    --color-peer-12: #3391d4;
-    --color-peer-bg-12: #3391d41a;
-    --color-peer-bg-active-12: #3391d42b;
-    --color-peer-gradient-12: repeating-linear-gradient(-45deg, #3391d4 0px, #3391d4 5px, #7dd3f0 5px, #7dd3f0 10px);
-    --color-peer-13: #dd4371;
-    --color-peer-bg-13: #dd43711a;
-    --color-peer-bg-active-13: #dd43712b;
-    --color-peer-gradient-13: repeating-linear-gradient(-45deg, #dd4371 0px, #dd4371 5px, #ffbe9f 5px, #ffbe9f 10px);
-    --color-peer-14: #247bed;
-    --color-peer-bg-14: #247bed1a;
-    --color-peer-bg-active-14: #247bed2b;
-    --color-peer-gradient-14: repeating-linear-gradient(-45deg, #247bed 0px, #247bed 5px, #f04856 5px, #f04856 10px, #ffffff 10px, #ffffff 15px);
-    --color-peer-15: #d67722;
-    --color-peer-bg-15: #d677221a;
-    --color-peer-bg-active-15: #d677222b;
-    --color-peer-gradient-15: repeating-linear-gradient(-45deg, #d67722 0px, #d67722 5px, #1ea011 5px, #1ea011 10px, #ffffff 10px, #ffffff 15px);
-    --color-peer-16: #179e42;
-    --color-peer-bg-16: #179e421a;
-    --color-peer-bg-active-16: #179e422b;
-    --color-peer-gradient-16: repeating-linear-gradient(-45deg, #179e42 0px, #179e42 5px, #e84a3f 5px, #e84a3f 10px, #ffffff 10px, #ffffff 15px);
-    --color-peer-17: #2894af;
-    --color-peer-bg-17: #2894af1a;
-    --color-peer-bg-active-17: #2894af2b;
-    --color-peer-gradient-17: repeating-linear-gradient(-45deg, #2894af 0px, #2894af 5px, #6fc456 5px, #6fc456 10px, #ffffff 10px, #ffffff 15px);
-    --color-peer-18: #0c9ab3;
-    --color-peer-bg-18: #0c9ab31a;
-    --color-peer-bg-active-18: #0c9ab32b;
-    --color-peer-gradient-18: repeating-linear-gradient(-45deg, #0c9ab3 0px, #0c9ab3 5px, #ffad95 5px, #ffad95 10px, #ffe6b5 10px, #ffe6b5 15px);
-    --color-peer-19: #7757d6;
-    --color-peer-bg-19: #7757d61a;
-    --color-peer-bg-active-19: #7757d62b;
-    --color-peer-gradient-19: repeating-linear-gradient(-45deg, #7757d6 0px, #7757d6 5px, #f79610 5px, #f79610 10px, #ffde8e 10px, #ffde8e 15px);
-    --color-peer-20: #1585cf;
-    --color-peer-bg-20: #1585cf1a;
-    --color-peer-bg-active-20: #1585cf2b;
-    --color-peer-gradient-20: repeating-linear-gradient(-45deg, #1585cf 0px, #1585cf 5px, #f2ab1d 5px, #f2ab1d 10px, #ffffff 10px, #ffffff 15px);
-    --color-webpage-initial-background: #2e3939;
-    --color-borders-alternate: rgba(0, 0, 0, 0.1);
-    --color-scrollbar: rgba(90, 90, 90, 0.3);
-    --color-text-meta-apple: #8c8c91;
-    --color-text-green: #4fae4e;
-    --color-text-green-rgb: 79, 174, 78;
-    --color-text-meta: #686c72;
-    --color-text-meta-rgb: 104, 108, 114;
-    --color-text-lighter: #2e3939;
-    --theme-background-color: #99BA92;
-    --accent-color: var(--color-primary);
-    --accent-background-color: var(--color-primary-tint);
-    --accent-background-active-color: var(--color-primary-opacity);
-    --color-interactive-active: var(--color-primary);
-    --color-interactive-inactive: rgba(var(--color-text-secondary-rgb), 0.25);
-    --color-interactive-buffered: rgba(var(--color-text-secondary-rgb), 0.25);
-    --color-interactive-element-hover: rgba(var(--color-text-secondary-rgb), 0.08);
-    --border-radius-modal: 1rem;
-    --border-radius-default: 0.75rem;
-    --border-radius-default-small: 0.625rem;
-    --border-radius-default-tiny: 0.375rem;
-    --border-radius-messages: 0.9375rem;
-    --border-radius-messages-small: 0.375rem;
-    --border-radius-forum-avatar: 33.3333%;
-    --font-family:
-      system-ui,
-      -apple-system,
-      "Roboto",
-      BlinkMacSystemFont,
-      "Apple Color Emoji",
-      "Segoe UI",
-      Oxygen,
-      Ubuntu,
-      Cantarell,
-      "Fira Sans",
-      "Droid Sans",
-      "Helvetica Neue",
-      sans-serif;
-  }
-
-  body {
-    font-family: var(--font-family);
-  }
-
-  .sidebar-button:not(.active) .icon-close {
-    animation: hide-icon .4s forwards ease-out;
-  }
-
-  .sidebar-button.active .icon-close {
-    animation: grow-icon .4s ease-out;
-  }
-
-  .sidebar-button:not(.active) .icon-loading {
-    animation: hide-icon .4s forwards ease-out;
-  }
-
-  .sidebar-button.active .icon-loading {
-    animation: grow-icon .4s ease-out;
-  }
-
-  .sidebar-button:not(.active) .icon-new-chat-filled {
-    animation: grow-icon .4s ease-out;
-  }
-
-  .sidebar-button.active .icon-new-chat-filled {
-    animation: hide-icon .4s forwards ease-out;
-  }
-
-  .sidebar-button:not(.active) .icon-arrow-right {
-    animation: grow-icon .4s ease-out;
-  }
-
-  .sidebar-button.active .icon-arrow-right {
-    animation: hide-icon .4s forwards ease-out;
-  }
+:root {
+  --composer-text-size: 15px;
+  --message-meta-height: 19px;
+  --message-text-size: 15px;
+  --color-primary: rgb(51, 144, 236);
+  --color-primary-opacity: rgb(80, 162, 233, 0.118);
+  --color-primary-opacity-hover: rgb(80, 162, 233, 0.251);
+  --color-primary-tint: rgb(51, 144, 236, 0.102);
+  --color-primary-shade: rgb(74, 149, 214);
+  --color-primary-shade-rgb: 74, 149, 214;
+  --color-background: rgb(255, 255, 255);
+  --color-background-compact-menu: rgb(255, 255, 255, 0.733);
+  --color-web-app-browser: rgb(255, 255, 255, 0.733);
+  --color-background-compact-menu-reactions: rgb(255, 255, 255, 0.922);
+  --color-background-compact-menu-hover: rgb(0, 0, 0, 0.067);
+  --color-background-secondary: rgb(244, 244, 245);
+  --color-background-secondary-accent: rgb(228, 228, 229);
+  --color-background-own: rgb(238, 255, 222);
+  --color-background-own-apple: rgb(220, 248, 197);
+  --color-background-selected: rgb(244, 244, 245);
+  --color-background-own-selected: rgb(208, 255, 172);
+  --color-chat-hover: rgb(244, 244, 245);
+  --color-chat-active: rgb(51, 144, 236);
+  --color-chat-active-greyed: rgb(96, 167, 240);
+  --color-item-hover: rgb(244, 244, 245);
+  --color-item-active: rgb(237, 237, 237);
+  --color-text: rgb(0, 0, 0);
+  --color-text-rgb: 0, 0, 0;
+  --color-text-secondary: rgb(112, 117, 121);
+  --color-text-secondary-rgb: 112, 117, 121;
+  --color-icon-secondary: rgb(112, 117, 121);
+  --color-text-secondary-apple: rgb(142, 142, 146);
+  --color-borders: rgb(218, 220, 224);
+  --color-borders-input: rgb(218, 220, 224);
+  --color-dividers: rgb(200, 198, 204);
+  --color-dividers-android: rgb(231, 231, 231);
+  --color-links: rgb(51, 144, 236);
+  --color-gray: rgb(196, 201, 204);
+  --color-list-icon: rgb(171, 175, 177);
+  --color-default-shadow: rgb(114, 114, 114, 0.251);
+  --color-light-shadow: rgb(114, 114, 114, 0.169);
+  --color-green: rgb(0, 199, 62);
+  --color-green-darker: rgb(0, 167, 52);
+  --color-success: rgb(0, 199, 62);
+  --color-text-meta-colored: rgb(77, 205, 94);
+  --color-reply-hover: rgb(244, 244, 244);
+  --color-reply-active: rgb(232, 233, 233);
+  --color-reply-own-hover: rgb(217, 245, 206);
+  --color-reply-own-hover-apple: rgb(203, 239, 183);
+  --color-reply-own-active: rgb(197, 236, 190);
+  --color-reply-own-active-apple: rgb(186, 230, 168);
+  --color-accent-own: rgb(69, 175, 84);
+  --color-accent-own-rgb: 69, 175, 84;
+  --color-message-meta-own: rgb(79, 174, 78, 1);
+  --color-own-links: rgb(51, 144, 236);
+  --color-code: rgb(74, 114, 154);
+  --color-code-own: rgb(60, 121, 64);
+  --color-code-bg: rgb(112, 117, 121, 0.078);
+  --color-code-own-bg: rgb(112, 117, 121, 0.078);
+  --color-composer-button: rgb(112, 117, 121, 0.8);
+  --color-message-reaction: rgb(235, 243, 253);
+  --color-message-reaction-hover: rgb(197, 222, 249);
+  --color-message-reaction-own: rgb(198, 234, 178);
+  --color-message-reaction-hover-own: rgb(181, 224, 164);
+  --color-message-reaction-chosen-hover: rgb(26, 130, 234);
+  --color-message-reaction-chosen-hover-own: rgb(63, 157, 75);
+  --color-voice-transcribe-button: rgb(232, 243, 255);
+  --color-voice-transcribe-button-own: rgb(204, 238, 191);
+  --color-topic-blue: rgb(47, 119, 114);
+  --color-topic-yellow: rgb(127, 105, 59);
+  --color-topic-violet: rgb(139, 90, 150);
+  --color-topic-green: rgb(68, 119, 74);
+  --color-topic-rose: rgb(155, 87, 107);
+  --color-topic-red: rgb(235, 104, 88);
+  --color-topic-grey: rgb(108, 108, 108);
+  --color-forum-unread-topic-hover: rgb(233, 233, 233);
+  --color-forum-hover-unread-topic-hover: rgb(226, 226, 226);
+  --color-chat-username: rgb(60, 126, 176);
+  --color-borders-read-story: rgb(196, 201, 204);
+  --color-background-menu-separator: rgb(0, 0, 0, 0.102);
+  --color-hover-overlay: rgb(0, 0, 0, 0.024);
+  --input-custom-emoji-filter: url(#color-filter-000000);
+  --color-peer-7: #e15052;
+  --color-peer-bg-7: #e150521a;
+  --color-peer-bg-active-7: #e150522b;
+  --color-peer-gradient-7: repeating-linear-gradient(-45deg, #e15052 0px, #e15052 5px, #f9ae63 5px, #f9ae63 10px);
+  --color-peer-8: #e0802b;
+  --color-peer-bg-8: #e0802b1a;
+  --color-peer-bg-active-8: #e0802b2b;
+  --color-peer-gradient-8: repeating-linear-gradient(-45deg, #e0802b 0px, #e0802b 5px, #fac534 5px, #fac534 10px);
+  --color-peer-9: #a05ff3;
+  --color-peer-bg-9: #a05ff31a;
+  --color-peer-bg-active-9: #a05ff32b;
+  --color-peer-gradient-9: repeating-linear-gradient(-45deg, #a05ff3 0px, #a05ff3 5px, #f48fff 5px, #f48fff 10px);
+  --color-peer-10: #27a910;
+  --color-peer-bg-10: #27a9101a;
+  --color-peer-bg-active-10: #27a9102b;
+  --color-peer-gradient-10: repeating-linear-gradient(-45deg, #27a910 0px, #27a910 5px, #a7dc57 5px, #a7dc57 10px);
+  --color-peer-11: #27acce;
+  --color-peer-bg-11: #27acce1a;
+  --color-peer-bg-active-11: #27acce2b;
+  --color-peer-gradient-11: repeating-linear-gradient(-45deg, #27acce 0px, #27acce 5px, #82e8d6 5px, #82e8d6 10px);
+  --color-peer-12: #3391d4;
+  --color-peer-bg-12: #3391d41a;
+  --color-peer-bg-active-12: #3391d42b;
+  --color-peer-gradient-12: repeating-linear-gradient(-45deg, #3391d4 0px, #3391d4 5px, #7dd3f0 5px, #7dd3f0 10px);
+  --color-peer-13: #dd4371;
+  --color-peer-bg-13: #dd43711a;
+  --color-peer-bg-active-13: #dd43712b;
+  --color-peer-gradient-13: repeating-linear-gradient(-45deg, #dd4371 0px, #dd4371 5px, #ffbe9f 5px, #ffbe9f 10px);
+  --color-peer-14: #247bed;
+  --color-peer-bg-14: #247bed1a;
+  --color-peer-bg-active-14: #247bed2b;
+  --color-peer-gradient-14: repeating-linear-gradient(-45deg, #247bed 0px, #247bed 5px, #f04856 5px, #f04856 10px, #ffffff 10px, #ffffff 15px);
+  --color-peer-15: #d67722;
+  --color-peer-bg-15: #d677221a;
+  --color-peer-bg-active-15: #d677222b;
+  --color-peer-gradient-15: repeating-linear-gradient(-45deg, #d67722 0px, #d67722 5px, #1ea011 5px, #1ea011 10px, #ffffff 10px, #ffffff 15px);
+  --color-peer-16: #179e42;
+  --color-peer-bg-16: #179e421a;
+  --color-peer-bg-active-16: #179e422b;
+  --color-peer-gradient-16: repeating-linear-gradient(-45deg, #179e42 0px, #179e42 5px, #e84a3f 5px, #e84a3f 10px, #ffffff 10px, #ffffff 15px);
+  --color-peer-17: #2894af;
+  --color-peer-bg-17: #2894af1a;
+  --color-peer-bg-active-17: #2894af2b;
+  --color-peer-gradient-17: repeating-linear-gradient(-45deg, #2894af 0px, #2894af 5px, #6fc456 5px, #6fc456 10px, #ffffff 10px, #ffffff 15px);
+  --color-peer-18: #0c9ab3;
+  --color-peer-bg-18: #0c9ab31a;
+  --color-peer-bg-active-18: #0c9ab32b;
+  --color-peer-gradient-18: repeating-linear-gradient(-45deg, #0c9ab3 0px, #0c9ab3 5px, #ffad95 5px, #ffad95 10px, #ffe6b5 10px, #ffe6b5 15px);
+  --color-peer-19: #7757d6;
+  --color-peer-bg-19: #7757d61a;
+  --color-peer-bg-active-19: #7757d62b;
+  --color-peer-gradient-19: repeating-linear-gradient(-45deg, #7757d6 0px, #7757d6 5px, #f79610 5px, #f79610 10px, #ffde8e 10px, #ffde8e 15px);
+  --color-peer-20: #1585cf;
+  --color-peer-bg-20: #1585cf1a;
+  --color-peer-bg-active-20: #1585cf2b;
+  --color-peer-gradient-20: repeating-linear-gradient(-45deg, #1585cf 0px, #1585cf 5px, #f2ab1d 5px, #f2ab1d 10px, #ffffff 10px, #ffffff 15px);
+  --color-webpage-initial-background: #2e3939;
+  --color-borders-alternate: rgba(0, 0, 0, 0.1);
+  --color-scrollbar: rgba(90, 90, 90, 0.3);
+  --color-text-meta-apple: #8c8c91;
+  --color-text-green: #4fae4e;
+  --color-text-green-rgb: 79, 174, 78;
+  --color-text-meta: #686c72;
+  --color-text-meta-rgb: 104, 108, 114;
+  --color-text-lighter: #2e3939;
+  --theme-background-color: #99BA92;
+  --accent-color: var(--color-primary);
+  --accent-background-color: var(--color-primary-tint);
+  --accent-background-active-color: var(--color-primary-opacity);
+  --color-interactive-active: var(--color-primary);
+  --color-interactive-inactive: rgba(var(--color-text-secondary-rgb), 0.25);
+  --color-interactive-buffered: rgba(var(--color-text-secondary-rgb), 0.25);
+  --color-interactive-element-hover: rgba(var(--color-text-secondary-rgb), 0.08);
+  --border-radius-modal: 1rem;
+  --border-radius-default: 0.75rem;
+  --border-radius-default-small: 0.625rem;
+  --border-radius-default-tiny: 0.375rem;
+  --border-radius-messages: 0.9375rem;
+  --border-radius-messages-small: 0.375rem;
+  --border-radius-forum-avatar: 33.3333%;
+  --font-family:
+    system-ui,
+    -apple-system,
+    "Roboto",
+    BlinkMacSystemFont,
+    "Apple Color Emoji",
+    "Segoe UI",
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
 }
 
-@layer components {
-  .chat-background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url("https://web.telegram.org/a/chat-bg-br.f34cc96fbfb048812820.png")
-  }
+body {
+  font-family: var(--font-family);
+}
 
-  .chat-background::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-image: url("https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png");
-    background-position: top right;
-    background-size: 510px auto;
-    background-repeat: repeat;
-    mix-blend-mode: overlay;
-  }
+.sidebar-button:not(.active) .icon-close {
+  animation: hide-icon .4s forwards ease-out;
+}
 
-  .message {
-    position: relative;
-    opacity: 1;
-    // transform: scale(1);
-    transition: opacity .2s ease, transform .2s ease;
-    user-select: text;
-  }
+.sidebar-button.active .icon-close {
+  animation: grow-icon .4s ease-out;
+}
 
-  .message {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: .375rem;
-    position: relative;
-    --background-color: var(--color-background);
-    --hover-color: var(--color-reply-hover);
-    --color-reaction: var(--color-message-reaction);
-    --hover-color-reaction: var(--color-message-reaction-hover);
-    --text-color-reaction: var(--accent-color);
-    --color-reaction-chosen: var(--accent-color);
-    --text-color-reaction-chosen: #FFFFFF;
-    --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover);
-    --active-color: var(--color-reply-active);
-    --max-width: 29rem;
-    --accent-color: var(--color-primary);
-    --accent-shade-color: var(--color-primary-shade);
-    --secondary-color: var(--color-text-secondary);
-    --color-voice-transcribe: var(--color-voice-transcribe-button);
-    --thumbs-background: var(--color-background);
-    --deleting-translate-x: -50%;
-    --select-message-scale: 0.9;
-    --border-top-left-radius: var(--border-radius-messages);
-    --border-top-right-radius: var(--border-radius-messages);
-    --border-bottom-left-radius: var(--border-radius-messages);
-    --border-bottom-right-radius: var(--border-radius-messages);
-  }
+.sidebar-button:not(.active) .icon-loading {
+  animation: hide-icon .4s forwards ease-out;
+}
 
-  .message.own {
-    flex-direction: row-reverse;
-    --background-color: var(--color-background-own);
-    --hover-color: var(--color-reply-own-hover);
-    --color-reaction: var(--color-message-reaction-own);
-    --hover-color-reaction: var(--color-message-reaction-hover-own);
-    --text-color-reaction: var(--accent-color);
-    --color-reaction-chosen: var(--accent-color);
-    --text-color-reaction-chosen: var(--color-background);
-    --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover-own);
-    --active-color: var(--color-reply-own-active);
-    --max-width: 30rem;
-    --accent-color: var(--color-accent-own);
-    --accent-shade-color: var(--color-green);
-    --secondary-color: var(--color-accent-own);
-    --color-code: var(--color-code-own);
-    --color-code-bg: var(--color-code-own-bg);
-    --color-links: var(--color-own-links);
-    --deleting-translate-x: 50%;
-    --color-text-green: var(--color-accent-own);
-    --color-voice-transcribe: var(--color-voice-transcribe-button-own);
-    --thumbs-background: var(--color-background-own);
-    --color-background-own: var(--color-background-own-apple);
-    --color-reply-own-hover: var(--color-reply-own-hover-apple);
-    --color-reply-own-active: var(--color-reply-own-active-apple);
-  }
+.sidebar-button.active .icon-loading {
+  animation: grow-icon .4s ease-out;
+}
 
-  .str-chat__li--top .message:not(.own) {
-    --border-bottom-left-radius: var(--border-radius-messages-small);
-  }
+.sidebar-button:not(.active) .icon-new-chat-filled {
+  animation: grow-icon .4s ease-out;
+}
 
-  .str-chat__li--middle .message:not(.own) {
-    --border-top-left-radius: var(--border-radius-messages-small);
-    --border-bottom-left-radius: var(--border-radius-messages-small);
-  }
+.sidebar-button.active .icon-new-chat-filled {
+  animation: hide-icon .4s forwards ease-out;
+}
 
-  .str-chat__li--bottom .message:not(.own) {
-    --border-top-left-radius: var(--border-radius-messages-small);
-  }
+.sidebar-button:not(.active) .icon-arrow-right {
+  animation: grow-icon .4s ease-out;
+}
 
-  .str-chat__li--single .message:not(.own) {
-    --border-bottom-left-radius: var(--border-radius-messages-small);
-  }
+.sidebar-button.active .icon-arrow-right {
+  animation: hide-icon .4s forwards ease-out;
+}
 
-  .str-chat__li--top .message.own {
-    --border-bottom-right-radius: var(--border-radius-messages-small);
-  }
+.chat-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("https://web.telegram.org/a/chat-bg-br.f34cc96fbfb048812820.png")
+}
 
-  .str-chat__li--middle .message.own {
-    --border-top-right-radius: var(--border-radius-messages-small);
-    --border-bottom-right-radius: var(--border-radius-messages-small);
-  }
+.chat-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url("https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png");
+  background-position: top right;
+  background-size: 510px auto;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
 
-  .str-chat__li--bottom .message.own {
-    --border-top-right-radius: var(--border-radius-messages-small);
-  }
+.message {
+  position: relative;
+  opacity: 1;
+  // transform: scale(1);
+  transition: opacity .2s ease, transform .2s ease;
+  user-select: text;
+}
 
-  .str-chat__li--single .message.own {
-    --border-bottom-right-radius: var(--border-radius-messages-small);
-  }
+.message {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: .375rem;
+  position: relative;
+  --background-color: var(--color-background);
+  --hover-color: var(--color-reply-hover);
+  --color-reaction: var(--color-message-reaction);
+  --hover-color-reaction: var(--color-message-reaction-hover);
+  --text-color-reaction: var(--accent-color);
+  --color-reaction-chosen: var(--accent-color);
+  --text-color-reaction-chosen: #FFFFFF;
+  --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover);
+  --active-color: var(--color-reply-active);
+  --max-width: 29rem;
+  --accent-color: var(--color-primary);
+  --accent-shade-color: var(--color-primary-shade);
+  --secondary-color: var(--color-text-secondary);
+  --color-voice-transcribe: var(--color-voice-transcribe-button);
+  --thumbs-background: var(--color-background);
+  --deleting-translate-x: -50%;
+  --select-message-scale: 0.9;
+  --border-top-left-radius: var(--border-radius-messages);
+  --border-top-right-radius: var(--border-radius-messages);
+  --border-bottom-left-radius: var(--border-radius-messages);
+  --border-bottom-right-radius: var(--border-radius-messages);
+}
 
-  .str-chat__li--bottom .message .svg-appendix,
-  .str-chat__li--single .message .svg-appendix {
-    display: block;
-  }
+.message.own {
+  flex-direction: row-reverse;
+  --background-color: var(--color-background-own);
+  --hover-color: var(--color-reply-own-hover);
+  --color-reaction: var(--color-message-reaction-own);
+  --hover-color-reaction: var(--color-message-reaction-hover-own);
+  --text-color-reaction: var(--accent-color);
+  --color-reaction-chosen: var(--accent-color);
+  --text-color-reaction-chosen: var(--color-background);
+  --hover-color-reaction-chosen: var(--color-message-reaction-chosen-hover-own);
+  --active-color: var(--color-reply-own-active);
+  --max-width: 30rem;
+  --accent-color: var(--color-accent-own);
+  --accent-shade-color: var(--color-green);
+  --secondary-color: var(--color-accent-own);
+  --color-code: var(--color-code-own);
+  --color-code-bg: var(--color-code-own-bg);
+  --color-links: var(--color-own-links);
+  --deleting-translate-x: 50%;
+  --color-text-green: var(--color-accent-own);
+  --color-voice-transcribe: var(--color-voice-transcribe-button-own);
+  --thumbs-background: var(--color-background-own);
+  --color-background-own: var(--color-background-own-apple);
+  --color-reply-own-hover: var(--color-reply-own-hover-apple);
+  --color-reply-own-active: var(--color-reply-own-active-apple);
+}
 
-  .message-content {
-    border-top-left-radius: var(--border-top-left-radius);
-    border-top-right-radius: var(--border-top-right-radius);
-    border-bottom-left-radius: var(--border-bottom-left-radius);
-    border-bottom-right-radius: var(--border-bottom-right-radius);
-    --accent-background-color: var(--hover-color);
-    --accent-background-active-color: var(--active-color);
-    overflow-clip-margin: .5rem;
-  }
+.str-chat__li--top .message:not(.own) {
+  --border-bottom-left-radius: var(--border-radius-messages-small);
+}
 
-  .str-chat__li--bottom .message:not(.own) .message-content,
-  .str-chat__li--single .message:not(.own) .message-content {
-    --border-bottom-left-radius: 0;
-  }
+.str-chat__li--middle .message:not(.own) {
+  --border-top-left-radius: var(--border-radius-messages-small);
+  --border-bottom-left-radius: var(--border-radius-messages-small);
+}
 
-  .str-chat__li--bottom .message.own .message-content,
-  .str-chat__li--single .message.own .message-content {
-    --border-bottom-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+.str-chat__li--bottom .message:not(.own) {
+  --border-top-left-radius: var(--border-radius-messages-small);
+}
 
-  .message-content .svg-appendix {
-    overflow: hidden;
-    position: absolute;
-    bottom: -0.0625rem;
-    width: .5625rem;
-    height: 1.125rem;
-    font-size: 1rem !important;
-  }
+.str-chat__li--single .message:not(.own) {
+  --border-bottom-left-radius: var(--border-radius-messages-small);
+}
 
-  .message-content .svg-appendix .corner {
-    fill: var(--background-color);
-  }
+.str-chat__li--top .message.own {
+  --border-bottom-right-radius: var(--border-radius-messages-small);
+}
 
-  .message.own .message-content .svg-appendix {
-    right: -0.551rem;
-  }
+.str-chat__li--middle .message.own {
+  --border-top-right-radius: var(--border-radius-messages-small);
+  --border-bottom-right-radius: var(--border-radius-messages-small);
+}
 
-  .message:not(.own) .message-content .svg-appendix {
-    left: -0.562rem;
-  }
+.str-chat__li--bottom .message.own {
+  --border-top-right-radius: var(--border-radius-messages-small);
+}
 
-  .message-dp {
-    display: none;
-  }
+.str-chat__li--single .message.own {
+  --border-bottom-right-radius: var(--border-radius-messages-small);
+}
 
-  .str-chat__li--bottom .message-dp,
-  .str-chat__li--single .message-dp {
-    display: block;
-  }
+.str-chat__li--bottom .message .svg-appendix,
+.str-chat__li--single .message .svg-appendix {
+  display: block;
+}
 
-  .composer-wrapper .svg-appendix {
-    position: absolute;
-    bottom: -0.1875rem;
-    right: -0.5rem;
-    width: .5625rem;
-    height: 1.25rem;
-    transition: opacity 200ms;
-    font-size: 1rem !important;
-  }
+.message-content {
+  border-top-left-radius: var(--border-top-left-radius);
+  border-top-right-radius: var(--border-top-right-radius);
+  border-bottom-left-radius: var(--border-bottom-left-radius);
+  border-bottom-right-radius: var(--border-bottom-right-radius);
+  --accent-background-color: var(--hover-color);
+  --accent-background-active-color: var(--active-color);
+  overflow-clip-margin: .5rem;
+}
 
-  .composer-wrapper .svg-appendix .corner {
-    fill: var(--color-background);
-  }
+.str-chat__li--bottom .message:not(.own) .message-content,
+.str-chat__li--single .message:not(.own) .message-content {
+  --border-bottom-left-radius: 0;
+}
 
-  .custom-scroll:hover {
-    scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
-  }
+.str-chat__li--bottom .message.own .message-content,
+.str-chat__li--single .message.own .message-content {
+  --border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-  .custom-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-    transition: scrollbar-color .3s ease;
-    -webkit-overflow-scrolling: touch;
-    pointer-events: auto;
-  }
+.message-content .svg-appendix {
+  overflow: hidden;
+  position: absolute;
+  bottom: -0.0625rem;
+  width: .5625rem;
+  height: 1.125rem;
+  font-size: 1rem !important;
+}
 
-  #channel .str-chat__channel .str-chat__container .str-chat__main-panel {
-    display: none;
-  }
+.message-content .svg-appendix .corner {
+  fill: var(--background-color);
+}
 
-  @media screen and (min-width: 1276px) {
-    .chat-background::before {
-      overflow: hidden;
-      transform: scale(1);
-      transform-origin: left center;
-    }
-  }
+.message.own .message-content .svg-appendix {
+  right: -0.551rem;
+}
+
+.message:not(.own) .message-content .svg-appendix {
+  left: -0.562rem;
+}
+
+.message-dp {
+  display: none;
+}
+
+.str-chat__li--bottom .message-dp,
+.str-chat__li--single .message-dp {
+  display: block;
+}
+
+.composer-wrapper .svg-appendix {
+  position: absolute;
+  bottom: -0.1875rem;
+  right: -0.5rem;
+  width: .5625rem;
+  height: 1.25rem;
+  transition: opacity 200ms;
+  font-size: 1rem !important;
+}
+
+.composer-wrapper .svg-appendix .corner {
+  fill: var(--color-background);
+}
+
+.custom-scroll:hover {
+  scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+  transition: scrollbar-color .3s ease;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+}
+
+#channel .str-chat__channel .str-chat__container .str-chat__main-panel {
+  display: none;
 }
 
 #sidebar .str-chat.messaging.light.str-chat__channel-list.str-chat__channel-list-react {
@@ -713,5 +701,13 @@
   100% {
     transform: scale(0.5);
     opacity: 0;
+  }
+}
+
+@media screen and (min-width: 1276px) {
+  .chat-background::before {
+    overflow: hidden;
+    transform: scale(1);
+    transform-origin: left center;
   }
 }

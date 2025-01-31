@@ -12,13 +12,9 @@ enum SidebarView {
   NewGroup,
 }
 
-interface SidebarProps {
-  loading?: boolean;
-}
+export const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
 
-const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
-
-export default function Sidebar({ loading = false }: SidebarProps) {
+export default function Sidebar() {
   const getMaxWidth = () => {
     const windowWidth = window.innerWidth;
     let newMaxWidth = defaultMaxWidth;
@@ -121,8 +117,7 @@ export default function Sidebar({ loading = false }: SidebarProps) {
           view === SidebarView.Default ? 'block' : 'hidden'
         )}
       >
-        {!loading && <ChatFolders />}
-        {loading && <div>Loading...</div>}
+        <ChatFolders />
       </div>
       {/* New Group View */}
       <div

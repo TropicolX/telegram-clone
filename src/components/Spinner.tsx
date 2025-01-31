@@ -1,4 +1,9 @@
-const Spinner = () => {
+interface SpinnerProps {
+  color?: string;
+  strokeWidth?: number;
+}
+
+const Spinner = ({ color = '#fff', strokeWidth = 5 }: SpinnerProps) => {
   return (
     <svg
       className="absolute animate-rotate w-full h-full origin-center"
@@ -10,11 +15,11 @@ const Spinner = () => {
         cy="50"
         r="20"
         fill="transparent"
-        stroke="#fff"
+        stroke={color}
         strokeMiterlimit="10"
         strokeDasharray={'10, 200'}
         strokeDashoffset="0"
-        strokeWidth={5}
+        strokeWidth={strokeWidth}
       />
     </svg>
   );
