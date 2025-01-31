@@ -24,18 +24,45 @@ const Messages = () => {
             top: separatorPosition,
             behavior: 'smooth',
           });
+        } else {
+          // Scroll to the bottom
+          scrollRef.current?.scrollTo({
+            top: scrollRef.current?.scrollHeight,
+            behavior: 'smooth',
+          });
         }
       };
 
-      // MutationObserver to detect changes in the DOM (like new messages added)
-      const observer = new MutationObserver(scrollToTarget);
-      observer.observe(scrollRef.current, { childList: true });
+      const chatListObserver = new MutationObserver((mutations) => {
+        const hasNewLI = mutations.some((mutation) =>
+          Array.from(mutation.addedNodes).some(
+            (node) =>
+              node.nodeType === 1 && (node as HTMLElement).tagName === 'LI'
+          )
+        );
 
-      // Initial scroll
-      scrollToTarget();
+        if (hasNewLI) {
+          scrollToTarget();
+        }
+      });
 
-      // Cleanup observer on component unmount
-      return () => observer.disconnect();
+      const addChatListObserver = () => {
+        const chatList = scrollRef.current?.querySelector('.str-chat__ul');
+        if (!chatList) return;
+        chatListObserver.observe(chatList, { childList: true });
+      };
+
+      const scrollObserver = new MutationObserver(addChatListObserver);
+      scrollObserver.observe(scrollRef.current, {
+        childList: true,
+        subtree: true,
+      });
+
+      // Cleanup observers
+      return () => {
+        scrollObserver.disconnect();
+        chatListObserver.disconnect();
+      };
     }
   }, [scrollRef]);
 

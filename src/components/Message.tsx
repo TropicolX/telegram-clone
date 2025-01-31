@@ -155,7 +155,7 @@ const Message = () => {
     if (allowRetry) {
       handleRetry(message);
     }
-    console.log(showPopup);
+
     if (isMobile && !showPopup) {
       e.preventDefault();
       setPosition(e);
