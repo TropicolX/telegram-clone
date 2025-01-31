@@ -8,6 +8,10 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'ringing-gradient':
+          'linear-gradient(#ffffff -300%, var(--color-primary))',
+      },
       colors: {
         primary: 'var(--color-primary)',
         'primary-opacity': 'var(--color-primary-opacity)',

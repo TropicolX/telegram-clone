@@ -31,13 +31,14 @@ const ChatFolders = ({}: ChannelSearchProps) => {
                 showChannelSearch
                 additionalChannelSearchProps={{
                   searchForChannels: true,
-                  onSelectResult: (_, result) => {
+                  onSelectResult: async (_, result) => {
                     if (result.cid) {
                       router.push(`/a/${result.id}`);
                     } else {
                       const channel = client.getChannelByMembers('messaging', {
                         members: [user!.id, result.id!],
                       });
+                      await channel.create();
                       router.push(`/a/${channel.data?.id}`);
                     }
                   },

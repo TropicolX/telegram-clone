@@ -8,6 +8,7 @@ import RippleButton from './RippleButton';
 import Spinner from './Spinner';
 import { customAlphabet } from 'nanoid';
 import { getLastSeen } from '../lib/utils';
+import clsx from 'clsx';
 
 interface NewGroupViewProps {
   goBack: () => void;
@@ -208,7 +209,7 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
           icon="arrow-right"
           onClick={createNewGroup}
           disabled={creatingGroup}
-          className={creatingGroup ? 'active' : ''}
+          className={clsx('sidebar-button', creatingGroup ? 'active' : '')}
         >
           <div className="icon-loading absolute">
             <div className="relative w-6 h-6 before:relative before:content-none before:block before:pt-full">

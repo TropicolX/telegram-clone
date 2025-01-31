@@ -22,10 +22,13 @@ import RippleButton from '@/components/RippleButton';
 import { getLastSeen } from '@/lib/utils';
 import {
   Call,
+  CallingState,
   MemberRequest,
+  useCalls,
   useStreamVideoClient,
 } from '@stream-io/video-react-sdk';
-import { Video } from '../../../components/Video';
+
+import Calls from '@/components/Calls';
 
 const Chat = () => {
   const { channelId } = useParams<{ channelId: string }>();
@@ -33,11 +36,13 @@ const Chat = () => {
   const { user } = useUser();
   const { client: chatClient } = useChatContext();
   const videoClient = useStreamVideoClient();
+  const [activeCall] = useCalls();
 
   const [chatChannel, setChatChannel] =
     useState<ChannelType<DefaultStreamChatGenerics>>();
   const [channelCall, setChannelCall] = useState<Call>();
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const disableCreateCall = !channelCall;
 
@@ -97,7 +102,11 @@ const Chat = () => {
     }
   }, [chatChannel, user, isDMChannel, getDMUser]);
 
-  const initiateCall = useCallback(() => {
+  const initiateCall = useCallback(async () => {
+    if (channelCall && channelCall.state.callingState === CallingState.JOINED) {
+      await channelCall?.leave();
+    }
+
     const initialMembers = chatChannel?.state.members as Record<
       string,
       ChannelMemberResponse<DefaultStreamChatGenerics>
@@ -108,17 +117,37 @@ const Chat = () => {
       })
     );
 
-    channelCall?.getOrCreate({
+    await channelCall?.getOrCreate({
       ring: true,
       data: {
         custom: {
           channelCid: chatChannel?.cid,
           channelName: getChatName(),
+          isDMChannel,
         },
         members,
       },
     });
-  }, [channelCall, chatChannel?.cid, chatChannel?.state.members, getChatName]);
+
+    if (!isDMChannel) {
+      await channelCall?.join();
+    }
+    setChannelCall(channelCall);
+    setIsModalOpen(true);
+    console.log('channelCall', channelCall);
+  }, [
+    channelCall,
+    chatChannel?.cid,
+    chatChannel?.state.members,
+    getChatName,
+    isDMChannel,
+  ]);
+
+  const onCloseModal = async () => {
+    setIsModalOpen(false);
+  };
+
+  const callActive = activeCall?.id === channelCall?.id;
 
   if (loading)
     return (
@@ -208,6 +237,28 @@ const Chat = () => {
             </div>
           </div>
         </div>
+        {/* Active Call */}
+        {callActive && (
+          <div className="absolute top-[3.5rem] left-0 w-full z-[11] before:content-[''] before:absolute before:-top-0.5 before:h-0.5 before:left-0 before:right-0 before:z-[-100] before:shadow-[0_2px_2px_var(--color-light-shadow)]">
+            <div className="absolute border-t border-t-color-borders top-0 z-[-1] w-full h-[2.875rem] flex justify-between items-center cursor-pointer px-3 py-[.375rem] bg-background">
+              <div className="flex flex-col leading-4">
+                <span className="text-[.875rem] text-black">Ongoing Call</span>
+                {!isDMChannel && (
+                  <span className="text-[.75rem] text-color-text-secondary">
+                    {channelCall?.state.participants.length} participants
+                  </span>
+                )}
+              </div>
+              {/* "Join" Call button */}
+              <button
+                onClick={initiateCall}
+                className="px-4 h-[1.875rem] rounded-[1rem] border border-primary bg-primary text-white uppercase text-base font-medium"
+              >
+                Join
+              </button>
+            </div>
+          </div>
+        )}
         {/* Actions */}
         <div className="flex gap-1">
           <RippleButton icon="search" />
@@ -231,7 +282,7 @@ const Chat = () => {
               <Messages />
               <MessageInput Input={Input} />
             </Window>
-            <Video />
+            <Calls isModalOpen={isModalOpen} onClose={onCloseModal} />
           </Channel>
         </div>
       </div>

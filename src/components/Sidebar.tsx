@@ -145,7 +145,7 @@ export default function Sidebar({ loading = false }: SidebarProps) {
           active
           icon="new-chat-filled"
           onClick={toggleMenu}
-          className={menuOpen ? 'active' : ''}
+          className={clsx('sidebar-button', menuOpen ? 'active' : '')}
         >
           <i className="absolute icon icon-close" />
         </Button>
