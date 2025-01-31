@@ -85,8 +85,8 @@ const initialValue: Descendant[] = [
 ];
 
 import Appendix from './Appendix';
-import Button from './Button';
 import Avatar from './Avatar';
+import Button from './Button';
 import EmojiPicker from './EmojiPicker';
 
 const MessageInput = () => {
@@ -96,6 +96,13 @@ const MessageInput = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [filesInfo, setFilesInfo] = useState<FileInfo[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState<PopupPosition>({
+    top: 0,
+    left: 0,
+  });
+  const popupRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const renderElement = useCallback(
     (props: ElementProps) => <Element {...props} />,
@@ -251,11 +258,6 @@ const MessageInput = () => {
     }
   };
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [position, setPosition] = useState<PopupPosition>({ top: 0, left: 0 });
-  const popupRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const handleMouseUp = () => {
     const selection = window.getSelection();
     if (!selection) {
@@ -359,21 +361,21 @@ const MessageInput = () => {
                               <img
                                 src={file.previewUrl}
                                 alt={`File Preview ${index}`}
-                                className="w-full h-full object-cover rounded-xl border-[#d6d6d621] border"
+                                className="w-full h-full object-cover rounded-xl border-[#46ba431a] border"
                               />
                             </div>
                           ) : (
-                            <div className="flex items-center rounded-xl gap-3 p-3 border border-[#d6d6d621] bg-[#1a1d21]">
+                            <div className="flex items-center rounded-xl gap-3 p-3 border border-[#46ba431a] bg-[#46ba431a]">
                               <Avatar
                                 width={32}
                                 borderRadius={8}
                                 data={{ name: file.type }}
                               />
                               <div className="flex flex-col gap-0.5">
-                                <p className="text-sm text-[#d1d2d3] break-all whitespace-break-spaces line-clamp-1 mr-2">
+                                <p className="text-sm text-black break-all whitespace-break-spaces line-clamp-1 mr-2">
                                   {file.name}
                                 </p>
-                                <p className="text-[13px] text-[#ababad] break-all whitespace-break-spaces line-clamp-1">
+                                <p className="text-[13px] text-black break-all whitespace-break-spaces line-clamp-1">
                                   {file.type}
                                 </p>
                               </div>
