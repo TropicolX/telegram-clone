@@ -180,7 +180,7 @@ const Message = () => {
         showPopup ? 'before:opacity-55' : 'before:opacity-0',
         own && 'own'
       )}
-      onTouchEnd={isMobile ? handleMobileTap : undefined}
+      onTouchStart={isMobile ? handleMobileTap : undefined}
       onContextMenu={!isMobile ? handleContextMenu : undefined}
     >
       <div ref={wrapperRef} className="relative content-wrapper">

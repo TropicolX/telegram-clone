@@ -19,11 +19,11 @@ const useClickOutside = (handler: () => void, shallow?: boolean) => {
     };
 
     document.addEventListener('mousedown', maybeHandler);
-    document.addEventListener('touchend', maybeHandler);
+    document.addEventListener('touchstart', maybeHandler);
 
     return () => {
       document.removeEventListener('mousedown', maybeHandler);
-      document.removeEventListener('touchend', maybeHandler);
+      document.removeEventListener('touchstart', maybeHandler);
     };
   });
 
