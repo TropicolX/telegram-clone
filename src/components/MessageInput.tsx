@@ -286,21 +286,6 @@ const MessageInput = () => {
 
       setIsVisible(true);
     }
-
-    // if (rect) {
-    //   const top = rect.top + window.scrollY;
-    //   const left = rect.left + window.scrollX;
-
-    //   console.log(top, left);
-    //   console.log(window.scrollY, window.scrollX);
-
-    //   setPosition({
-    //     top: top - 800,
-    //     left: left - 620,
-    //   });
-
-    //   setIsVisible(true);
-    // }
   };
 
   return (

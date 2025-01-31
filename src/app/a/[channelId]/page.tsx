@@ -134,7 +134,6 @@ const Chat = () => {
     }
     setChannelCall(channelCall);
     setIsModalOpen(true);
-    console.log('channelCall', channelCall);
   }, [
     channelCall,
     chatChannel?.cid,
