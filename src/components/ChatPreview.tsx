@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChannelPreviewUIComponentProps } from 'stream-chat-react';
+import {
+  ChannelPreviewUIComponentProps,
+  useChatContext,
+} from 'stream-chat-react';
 import clsx from 'clsx';
 
 import Avatar from './Avatar';
-import { useUser } from '@clerk/nextjs';
 import { StreamTheme, useCalls } from '@stream-io/video-react-sdk';
 
 const ChatPreview = ({
@@ -14,7 +16,7 @@ const ChatPreview = ({
   displayImage,
   lastMessage,
 }: ChannelPreviewUIComponentProps) => {
-  const { user } = useUser();
+  const { client } = useChatContext();
   const router = useRouter();
   const pathname = usePathname();
   const [activeCall] = useCalls();
@@ -28,9 +30,9 @@ const ChatPreview = ({
 
   const getDMUser = useCallback(() => {
     const members = { ...channel.state.members };
-    delete members[user!.id];
+    delete members[client.userID!];
     return Object.values(members)[0].user!;
-  }, [channel.state.members, user]);
+  }, [channel.state.members, client.userID]);
 
   const getChatName = useCallback(() => {
     if (displayTitle) return displayTitle;
