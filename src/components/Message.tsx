@@ -1,7 +1,6 @@
 import {
   MouseEvent,
   RefObject,
-  TouchEvent,
   useEffect,
   useMemo,
   useRef,
@@ -84,12 +83,6 @@ const Message = () => {
     }
   }, [deliveredAndRead, messageRef, own]);
 
-  const handleClick = () => {
-    if (allowRetry) {
-      handleRetry(message);
-    }
-  };
-
   const reactionCounts = useMemo(() => {
     if (!message.reaction_groups) {
       return [];
@@ -148,20 +141,7 @@ const Message = () => {
     return null;
   };
 
-  const handleMobileTap = (e: TouchEvent<HTMLDivElement>) => {
-    if (!isMobile) return;
-
-    const touch = e.touches[0];
-    setPopupPosition({ x: touch.pageX, y: touch.pageY });
-    setShowPopup(true);
-  };
-
-  const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
-    if (isMobile) return;
-
-    e.preventDefault();
-    if (showPopup) return setShowPopup(false);
-
+  const setPosition = (e: MouseEvent<HTMLDivElement>) => {
     const containerRect =
       messageRef?.current?.getBoundingClientRect() as DOMRect;
     const top = e.clientY - containerRect.top + 10;
@@ -171,18 +151,39 @@ const Message = () => {
     setShowPopup(true);
   };
 
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (allowRetry) {
+      handleRetry(message);
+    }
+    console.log(showPopup);
+    if (isMobile && !showPopup) {
+      e.preventDefault();
+      setPosition(e);
+    }
+  };
+
+  const handleContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+    e.preventDefault();
+
+    if (showPopup) return setShowPopup(false);
+    setPosition(e);
+  };
+
   return (
     <div
       ref={messageRef}
-      onClick={handleClick}
       className={clsx(
         'message before:absolute before:bg-[#4A8E3A8C] before:top-[-0.1875rem] before:bottom-[-0.1875rem] before:left-[-50vw] before:right-[-50vw] before:z-0 before:transition-opacity before:duration-200 before:ease-out',
         showPopup ? 'before:opacity-55' : 'before:opacity-0',
         own && 'own'
       )}
-      onTouchStart={isMobile ? handleMobileTap : undefined}
+      onClick={handleClick}
       onContextMenu={!isMobile ? handleContextMenu : undefined}
     >
+      {showPopup && (
+        <div className="fixed z-[1] top-0 left-0 w-full h-full"></div>
+      )}
       <div ref={wrapperRef} className="relative content-wrapper">
         {/* Popup */}
         {showPopup && (
