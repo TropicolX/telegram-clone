@@ -150,7 +150,6 @@ const Message = () => {
 
   const handleMobileTap = (e: TouchEvent<HTMLDivElement>) => {
     if (!isMobile) return;
-    if (showPopup) return setShowPopup(false);
 
     const touch = e.touches[0];
     setPopupPosition({ x: touch.pageX, y: touch.pageY });
@@ -181,7 +180,7 @@ const Message = () => {
         showPopup ? 'before:opacity-55' : 'before:opacity-0',
         own && 'own'
       )}
-      onTouchStart={isMobile ? handleMobileTap : undefined}
+      onTouchEnd={isMobile ? handleMobileTap : undefined}
       onContextMenu={!isMobile ? handleContextMenu : undefined}
     >
       <div ref={wrapperRef} className="relative content-wrapper">
