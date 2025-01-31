@@ -25,9 +25,8 @@
     "slate-dom": "^0.111.0",
     "slate-history": "^0.110.3",
     "slate-react": "^0.112.1",
-    "stream-chat": "^8.49.0",
-    "stream-chat-react": "^12.8.1",
-    "svix": "^1.44.0"
+    "stream-chat": "8.41.1",
+    "stream-chat-react": "12.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -39,9 +38,13 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.3",
     "postcss": "^8",
+    "react-markdown": "^9.0.3",
     "sass": "^1.83.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5",
     "yarn": "^1.22.22"
+  },
+  "resolutions": {
+    "stream-chat-react/react-markdown": "9.0.3"
   }
 }

@@ -28,12 +28,22 @@ const tokenProvider = async (userId: string) => {
 
 const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
 
+export const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
+
 export default function Layout({ children }: LayoutProps) {
   const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const [chatClient, setChatClient] = useState<StreamChat>();
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
   const { channelId } = useParams<{ channelId?: string }>();
+  const [sidebarWidth, setSidebarWidth] = useState(0);
+
+  useEffect(() => {
+    const savedWidth =
+      parseInt(localStorage.getItem('sidebarWidth') as string) || defaultWidth;
+    localStorage.setItem('sidebarWidth', String(savedWidth));
+    setSidebarWidth(savedWidth);
+  }, []);
 
   useEffect(() => {
     const customProvider = async () => {
@@ -76,7 +86,7 @@ export default function Layout({ children }: LayoutProps) {
     <Chat client={chatClient!}>
       <StreamVideo client={videoClient!}>
         <div className="flex h-full w-full">
-          <Sidebar />
+          <Sidebar width={sidebarWidth} setWidth={setSidebarWidth} />
           <div
             className={clsx(
               'fixed max-w-none left-0 right-0 top-0 bottom-0 lg:relative flex w-full h-full justify-center z-[1] min-w-0',

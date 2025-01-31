@@ -1,14 +1,15 @@
-import { useState } from 'react';
-import { defaultWidth } from './Sidebar';
+import { useEffect, useState } from 'react';
+import { defaultWidth } from '@/app/a/layout';
 
 const PageLoading = () => {
-  const [width] = useState(() => {
+  const [width, setWidth] = useState(defaultWidth);
+
+  useEffect(() => {
     const savedWidth =
-      parseInt(window.localStorage.getItem('sidebarWidth') as string) ||
-      defaultWidth;
-    window.localStorage.setItem('sidebarWidth', String(savedWidth));
-    return savedWidth;
-  });
+      parseInt(localStorage.getItem('sidebarWidth') as string) || defaultWidth;
+    localStorage.setItem('sidebarWidth', String(savedWidth));
+    setWidth(savedWidth);
+  }, []);
 
   return (
     <div className="flex h-full w-full">

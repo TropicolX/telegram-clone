@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect, RefObject } from 'react';
+import React, { useState, useEffect, RefObject } from 'react';
 import clsx from 'clsx';
 
 import Button from './Button';
 import ChatFolders from './ChatFolders';
+import { minWidth, defaultMaxWidth } from '@/app/a/layout';
 import NewGroupView from './NewGroupView';
 import useClickOutside from '@/hooks/useClickOutside';
 
@@ -12,9 +13,12 @@ enum SidebarView {
   NewGroup,
 }
 
-export const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
+interface SidebarProps {
+  width: number;
+  setWidth: React.Dispatch<React.SetStateAction<number>>;
+}
 
-export default function Sidebar() {
+export default function Sidebar({ width, setWidth }: SidebarProps) {
   const getMaxWidth = () => {
     const windowWidth = window.innerWidth;
     let newMaxWidth = defaultMaxWidth;
@@ -24,17 +28,9 @@ export default function Sidebar() {
     } else if (windowWidth >= 926) {
       newMaxWidth = Math.floor(windowWidth * 0.4);
     }
-
     return newMaxWidth;
   };
 
-  const [width, setWidth] = useState(() => {
-    const savedWidth =
-      parseInt(window.localStorage.getItem('sidebarWidth') as string) ||
-      defaultWidth;
-    window.localStorage.setItem('sidebarWidth', String(savedWidth));
-    return savedWidth;
-  });
   const [maxWidth, setMaxWidth] = useState(getMaxWidth());
   const [menuOpen, setMenuOpen] = useState(false);
   const [view, setView] = useState(SidebarView.Default);
@@ -66,7 +62,7 @@ export default function Sidebar() {
     return () => {
       window.removeEventListener('resize', calculateMaxWidth);
     };
-  }, [width]);
+  }, [setWidth, width]);
 
   useEffect(() => {
     if (width) {
@@ -77,7 +73,7 @@ export default function Sidebar() {
       setWidth(newWidth);
       localStorage.setItem('sidebarWidth', String(width));
     }
-  }, [width, maxWidth]);
+  }, [width, maxWidth, setWidth]);
 
   // Handler for resizing the sidebar
   const handleResize = (
