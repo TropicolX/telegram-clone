@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ChannelMemberResponse, Channel as ChannelType } from 'stream-chat';
+import { useUser } from '@clerk/nextjs';
 import {
   Channel,
   DefaultStreamChatGenerics,
@@ -9,17 +10,6 @@ import {
   useChatContext,
   Window,
 } from 'stream-chat-react';
-import { useUser } from '@clerk/nextjs';
-
-import Appendix from '@/components/Appendix';
-import Avatar from '@/components/Avatar';
-import Button from '@/components/Button';
-import DateSeparator from '@/components/DateSeparator';
-import EmptyChat from '@/components/EmptyChat';
-import Input from '@/components/MessageInput';
-import Messages from '@/components/Messages';
-import RippleButton from '@/components/RippleButton';
-import { getLastSeen } from '@/lib/utils';
 import {
   Call,
   CallingState,
@@ -28,7 +18,16 @@ import {
   useStreamVideoClient,
 } from '@stream-io/video-react-sdk';
 
+import Appendix from '@/components/Appendix';
+import Avatar from '@/components/Avatar';
+import Button from '@/components/Button';
 import Calls from '@/components/Calls';
+import DateSeparator from '@/components/DateSeparator';
+import EmptyChat from '@/components/EmptyChat';
+import { getLastSeen } from '@/lib/utils';
+import Input from '@/components/MessageInput';
+import Messages from '@/components/Messages';
+import RippleButton from '@/components/RippleButton';
 
 const Chat = () => {
   const { channelId } = useParams<{ channelId: string }>();
@@ -130,7 +129,7 @@ const Chat = () => {
     });
 
     if (!isDMChannel) {
-      await channelCall?.join();
+      channelCall?.join();
     }
     setChannelCall(channelCall);
     setIsModalOpen(true);
@@ -142,11 +141,17 @@ const Chat = () => {
     isDMChannel,
   ]);
 
+  useEffect(() => {
+    if (activeCall?.state.callingState === CallingState.RINGING) {
+      setIsModalOpen(true);
+    }
+  }, [activeCall]);
+
   const onCloseModal = async () => {
     setIsModalOpen(false);
   };
 
-  const callActive = activeCall?.id === channelCall?.id;
+  const callActive = activeCall?.cid === channelCall?.cid;
 
   if (loading)
     return (
@@ -242,15 +247,9 @@ const Chat = () => {
             <div className="absolute border-t border-t-color-borders top-0 z-[-1] w-full h-[2.875rem] flex justify-between items-center cursor-pointer px-3 py-[.375rem] bg-background">
               <div className="flex flex-col leading-4">
                 <span className="text-[.875rem] text-black">Ongoing Call</span>
-                {!isDMChannel && (
-                  <span className="text-[.75rem] text-color-text-secondary">
-                    {channelCall?.state.participants.length} participants
-                  </span>
-                )}
               </div>
-              {/* "Join" Call button */}
               <button
-                onClick={initiateCall}
+                onClick={() => setIsModalOpen(true)}
                 className="px-4 h-[1.875rem] rounded-[1rem] border border-primary bg-primary text-white uppercase text-base font-medium"
               >
                 Join

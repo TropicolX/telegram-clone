@@ -53,10 +53,14 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
     call?.join();
   };
 
-  const declineCall = () => {
-    call?.leave({
-      reject: true,
-    });
+  const endCall = () => {
+    if (customData.isDMChannel) {
+      call?.endCall();
+    } else {
+      call?.leave({
+        reject: true,
+      });
+    }
   };
 
   if (!call) return null;
@@ -154,7 +158,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
             <ToggleAudioPublishingButton />
           </SpeakingWhileMutedNotification>
           <ToggleVideoPublishingButton />
-          <CancelCallButton />
+          <CancelCallButton onClick={endCall} />
         </div>
       </>
     );
@@ -197,7 +201,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
             </button>
           )}
           <button
-            onClick={declineCall}
+            onClick={endCall}
             disabled={buttonsDisabled}
             className="w-[56px] h-[56px] flex items-center justify-center text-[24px] rounded-full border border-[#ff595a] bg-[#ff595a] text-[white]"
           >

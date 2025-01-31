@@ -25,9 +25,13 @@ const ChatFolders = ({}: ChannelSearchProps) => {
                 sort={{
                   last_message_at: -1,
                 }}
-                filters={{
-                  members: { $in: [user!.id] },
-                }}
+                filters={
+                  user?.id
+                    ? {
+                        members: { $in: [user!.id] },
+                      }
+                    : undefined
+                }
                 showChannelSearch
                 additionalChannelSearchProps={{
                   searchForChannels: true,

@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import Avatar from './Avatar';
 import { useUser } from '@clerk/nextjs';
+import { StreamTheme, useCalls } from '@stream-io/video-react-sdk';
 
 const ChatPreview = ({
   channel,
@@ -16,6 +17,9 @@ const ChatPreview = ({
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
+  const [activeCall] = useCalls();
+
+  const callActive = activeCall?.id === channel.id;
 
   const goToChat = () => {
     const channelId = channel.id;
@@ -111,13 +115,26 @@ const ChatPreview = ({
       )}
       onClick={goToChat}
     >
-      <Avatar
-        data={{
-          name: getChatName(),
-          image: getImage(),
-        }}
-        width={54}
-      />
+      <div className="relative">
+        <Avatar
+          data={{
+            name: getChatName(),
+            image: getImage(),
+          }}
+          width={54}
+        />
+        {callActive && (
+          <StreamTheme>
+            <div className="absolute bottom-0.5 right-0 w-4 h-4 flex items-center justify-center bg-white border-2 border-primary rounded-full">
+              <span className="str-video__speech-indicator str-video__speech-indicator--speaking">
+                <span className="str-video__speech-indicator__bar !w-0.5 !h-1/2" />
+                <span className="str-video__speech-indicator__bar !w-0.5 !h-1/2" />
+                <span className="str-video__speech-indicator__bar !w-0.5 !h-1/2" />
+              </span>
+            </div>
+          </StreamTheme>
+        )}
+      </div>
       <div className="flex-1 overflow-hidden">
         <div className="flex items-center justify-start overflow-hidden">
           <div className="flex items-center justify-start overflow-hidden gap-1">

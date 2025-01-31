@@ -136,7 +136,6 @@ const Message = () => {
         <div className="message-content relative max-w-[var(--max-width)] bg-[var(--background-color)] shadow-[0_1px_2px_var(--color-default-shadow)] p-[.3125rem_.5rem_.375rem] text-[15px]">
           <div className="content-inner min-w-0">
             <div className="break-words whitespace-pre-wrap leading-[1.3125] block rounded-[.25rem] relative overflow-clip">
-              {/* <MessageActions  /> */}
               <div
                 className={clsx(
                   message.attachments && message.attachments.length > 0
