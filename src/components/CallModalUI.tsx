@@ -68,7 +68,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
   if (callingState === CallingState.JOINED) {
     return (
       <>
-        <div className="flex items-center pb-3.5 select-none text-white">
+        <div className="top-0 absolute pt-1.5 w-[calc(100%-24px)] z-20 h-[64px] bg-[#212121] flex items-center pb-3.5 select-none text-white">
           <div className="[&>button]:text-white [&>button]:w-[2.75rem] [&>button]:h-[2.75rem]">
             <RippleButton icon="fullscreen" />
           </div>
@@ -152,7 +152,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
             ))}
           </div>
         </div>
-        <div className="w-full self-end flex items-center justify-center mt-auto mb-4 gap-4">
+        <div className="bottom-0 absolute pt-2 w-[calc(100%-24px)] z-20 h-[64px] bg-[#212121] self-end flex items-center justify-center mt-auto mb-4 gap-4">
           <ScreenShareButton />
           <SpeakingWhileMutedNotification>
             <ToggleAudioPublishingButton />
