@@ -184,3 +184,152 @@
 body {
   font-family: var(--font-family);
 }
+
+.custom-scroll:hover {
+  scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+  transition: scrollbar-color .3s ease;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+}
+
+.custom-scroll:hover {
+  scrollbar-color: var(--color-scrollbar) rgba(0, 0, 0, 0);
+}
+
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+  transition: scrollbar-color .3s ease;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+}
+
+.icon-menu {
+  position: absolute;
+}
+
+.icon-menu::before {
+  top: -0.3125rem;
+}
+
+.icon-menu::after {
+  top: 0.3125rem;
+}
+
+.icon-menu::before,
+.icon-menu::after {
+  position: absolute;
+  left: 0;
+  content: "";
+}
+
+.icon-menu,
+.icon-menu::before,
+.icon-menu::after {
+  width: 1.125rem;
+  height: .125rem;
+  border-radius: .125rem;
+  background-color: var(--color-text-secondary);
+  transition: transform .25s;
+  transform: rotate(0);
+}
+
+.sidebar-button:not(.active) .icon-close {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+.sidebar-button.active .icon-close {
+  animation: grow-icon .4s ease-out;
+}
+
+.sidebar-button:not(.active) .icon-loading {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+.sidebar-button.active .icon-loading {
+  animation: grow-icon .4s ease-out;
+}
+
+.sidebar-button:not(.active) .icon-new-chat-filled {
+  animation: grow-icon .4s ease-out;
+}
+
+.sidebar-button.active .icon-new-chat-filled {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+.sidebar-button:not(.active) .icon-arrow-right {
+  animation: grow-icon .4s ease-out;
+}
+
+.sidebar-button.active .icon-arrow-right {
+  animation: hide-icon .4s forwards ease-out;
+}
+
+.chat-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("https://web.telegram.org/a/chat-bg-br.f34cc96fbfb048812820.png")
+}
+
+.chat-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url("https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png");
+  background-position: top right;
+  background-size: 510px auto;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+@keyframes grow-icon {
+  0% {
+    transform: scale(0.5);
+    opacity: .8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hide-icon {
+  0% {
+    transform: scale(1);
+    opacity: .4;
+  }
+
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+@media screen and (min-width: 1276px) {
+  .chat-background::before {
+    overflow: hidden;
+    transform: scale(1);
+    transform-origin: left center;
+  }
+}
