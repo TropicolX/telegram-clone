@@ -1,7 +1,7 @@
 import { StreamCall, StreamTheme, useCalls } from '@stream-io/video-react-sdk';
+import clsx from 'clsx';
 
 import CallModalUI from './CallModalUI';
-import clsx from 'clsx';
 
 type CallsProps = {
   isModalOpen: boolean;

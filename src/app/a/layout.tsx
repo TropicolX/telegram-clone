@@ -32,10 +32,11 @@ export const [minWidth, defaultWidth, defaultMaxWidth] = [256, 420, 424];
 
 export default function Layout({ children }: LayoutProps) {
   const { user } = useUser();
+  const { channelId } = useParams<{ channelId?: string }>();
+
   const [loading, setLoading] = useState(true);
   const [chatClient, setChatClient] = useState<StreamChat>();
   const [videoClient, setVideoClient] = useState<StreamVideoClient>();
-  const { channelId } = useParams<{ channelId?: string }>();
   const [sidebarWidth, setSidebarWidth] = useState(0);
 
   useEffect(() => {

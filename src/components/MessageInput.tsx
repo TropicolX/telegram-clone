@@ -43,10 +43,6 @@ type Descendant = Omit<SlateDescendant, 'children'> & {
       }
     | {
         text: string;
-        underline: boolean;
-      }
-    | {
-        text: string;
         strikethrough: boolean;
       }
   )[];
@@ -101,6 +97,7 @@ const MessageInput = () => {
     top: 0,
     left: 0,
   });
+
   const popupRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -120,7 +117,6 @@ const MessageInput = () => {
 
   const serializeNode = (
     node: Descendant | Descendant['children'],
-    parentType: string | null = null,
     indentation: string = ''
   ) => {
     if (Text.isText(node)) {
@@ -141,27 +137,10 @@ const MessageInput = () => {
 
     const formattedNode = node as Descendant;
     const children: string = formattedNode.children
-      .map((n) => serializeNode(n as never, formattedNode.type, indentation))
+      .map((n) => serializeNode(n as never, indentation))
       .join('');
 
-    switch (formattedNode.type) {
-      case 'paragraph':
-        return `${children}`;
-      case 'block-quote':
-        return `> ${children}`;
-      case 'bulleted-list':
-      case 'numbered-list':
-        return `${children}`;
-      case 'list-item': {
-        const prefix = parentType === 'numbered-list' ? '1. ' : '- ';
-        const indentedPrefix = `${indentation}${prefix}`;
-        return `${indentedPrefix}${children}\n`;
-      }
-      case 'code-block':
-        return `\`\`\`\n${children}\n\`\`\``;
-      default:
-        return `${children}`;
-    }
+    return `${children}`;
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -275,12 +254,9 @@ const MessageInput = () => {
 
     if (containerRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();
-
-      // 'rect' is in viewport space, so subtract container coordinates
       const selectionTop = rect.top - containerRect.top;
       const selectionLeft = rect.left - containerRect.left;
 
-      // Position the popup slightly above the selection
       setPosition({
         top: selectionTop - 55,
         left: selectionLeft - 55,
@@ -313,11 +289,6 @@ const MessageInput = () => {
                 >
                   <FormattingButton type="mark" format="bold" icon="bold" />
                   <FormattingButton type="mark" format="italic" icon="italic" />
-                  <FormattingButton
-                    type="mark"
-                    format="underline"
-                    icon="underlined"
-                  />
                   <FormattingButton
                     type="mark"
                     format="strikethrough"
@@ -516,25 +487,8 @@ type ElementProps = RenderElementProps & {
 };
 
 const Element = (props: ElementProps) => {
-  const { attributes, children, element } = props;
-  switch (element.type) {
-    case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>;
-    case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>;
-    case 'list-item':
-      return <li {...attributes}>{children}</li>;
-    case 'numbered-list':
-      return <ol {...attributes}>{children}</ol>;
-    case 'code-block':
-      return (
-        <div {...attributes} className="code-block">
-          {children}
-        </div>
-      );
-    default:
-      return <p {...attributes}>{children}</p>;
-  }
+  const { attributes, children } = props;
+  return <p {...attributes}>{children}</p>;
 };
 
 interface LeafProps extends RenderLeafProps {
@@ -542,7 +496,6 @@ interface LeafProps extends RenderLeafProps {
     bold?: boolean;
     code?: boolean;
     italic?: boolean;
-    underline?: boolean;
     strikethrough?: boolean;
     text: string;
   };
@@ -559,10 +512,6 @@ const Leaf = ({ attributes, children, leaf }: LeafProps) => {
 
   if (leaf.italic) {
     children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
   }
 
   if (leaf.strikethrough) {

@@ -18,28 +18,30 @@ import clsx from 'clsx';
 import emojiData from '@emoji-mart/data';
 
 import Appendix from './Appendix';
-import EmojiPicker from './EmojiPicker';
 import Avatar from './Avatar';
+import EmojiPicker from './EmojiPicker';
+import useClampPopup from '../hooks/useClampPopup';
 import useClickOutside from '../hooks/useClickOutside';
 import useIsMobile from '../hooks/useIsMobile';
-import useClampPopup from '../hooks/useClampPopup';
 
 const Message = () => {
   const { message, isMyMessage, handleAction, readBy, handleRetry } =
     useMessageContext();
   const { channel } = useChannelStateContext('ChannelMessage');
   const { user } = useUser();
-  const messageRef = useRef<HTMLDivElement | null>(null);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const popupRef = useClickOutside(() => {
-    setShowPopup(false);
-  }) as RefObject<HTMLDivElement>;
   const isMobile = useIsMobile();
+
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState({
     x: 0,
     y: 0,
   });
+
+  const messageRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const popupRef = useClickOutside(() => {
+    setShowPopup(false);
+  }) as RefObject<HTMLDivElement>;
 
   const isDMChannel = channel?.id?.startsWith('!members');
   const own = isMyMessage();
@@ -50,6 +52,7 @@ const Message = () => {
   });
   const justReadByMe =
     readBy?.length === 0 || (readBy?.length === 1 && readBy[0].id === user?.id);
+
   const sending = message.status === 'sending';
   const delivered = message.status === 'received';
   const deliveredAndRead = delivered && !justReadByMe;

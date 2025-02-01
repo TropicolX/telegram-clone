@@ -44,6 +44,7 @@ const Chat = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const disableCreateCall = !channelCall;
+  const callActive = activeCall?.cid === channelCall?.cid;
 
   useEffect(() => {
     const loadChannel = async () => {
@@ -58,6 +59,12 @@ const Chat = () => {
 
     if (chatClient && !chatChannel) loadChannel();
   }, [channelId, chatChannel, chatClient, router, videoClient]);
+
+  useEffect(() => {
+    if (activeCall?.state.callingState === CallingState.RINGING) {
+      setIsModalOpen(true);
+    }
+  }, [activeCall]);
 
   const isDMChannel = useMemo(
     () => chatChannel?.id?.startsWith('!members'),
@@ -141,17 +148,9 @@ const Chat = () => {
     isDMChannel,
   ]);
 
-  useEffect(() => {
-    if (activeCall?.state.callingState === CallingState.RINGING) {
-      setIsModalOpen(true);
-    }
-  }, [activeCall]);
-
   const onCloseModal = async () => {
     setIsModalOpen(false);
   };
-
-  const callActive = activeCall?.cid === channelCall?.cid;
 
   if (loading) return <ChannelLoading />;
 

@@ -37,6 +37,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
   const participantCount = useParticipantCount();
   const participants = useParticipants();
   const [participantInSpotlight] = participants;
+
   const isSpeakerLayout = useMemo(() => {
     if (participantInSpotlight) {
       return (

@@ -14,7 +14,6 @@ const Messages = () => {
         ) as HTMLDivElement | null;
 
         if (unreadSeparator) {
-          // Scroll to the unread separator
           const separatorPosition =
             unreadSeparator.offsetTop -
             (scrollRef.current?.offsetTop as number);
@@ -58,7 +57,6 @@ const Messages = () => {
         subtree: true,
       });
 
-      // Cleanup observers
       return () => {
         scrollObserver.disconnect();
         chatListObserver.disconnect();

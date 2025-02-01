@@ -4,10 +4,10 @@ import {
   ChannelPreviewUIComponentProps,
   useChatContext,
 } from 'stream-chat-react';
+import { StreamTheme, useCalls } from '@stream-io/video-react-sdk';
 import clsx from 'clsx';
 
 import Avatar from './Avatar';
-import { StreamTheme, useCalls } from '@stream-io/video-react-sdk';
 
 const ChatPreview = ({
   channel,

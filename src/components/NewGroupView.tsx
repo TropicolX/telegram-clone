@@ -15,6 +15,8 @@ interface NewGroupViewProps {
 }
 
 const NewGroupView = ({ goBack }: NewGroupViewProps) => {
+  const { client } = useChatContext();
+
   const [creatingGroup, setCreatingGroup] = useState(false);
   const [query, setQuery] = useState('');
   const [groupName, setGroupName] = useState('');
@@ -25,10 +27,9 @@ const NewGroupView = ({ goBack }: NewGroupViewProps) => {
     UserResponse<DefaultStreamChatGenerics>[]
   >([]);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const cancelled = useRef(false);
-
-  const { client } = useChatContext();
 
   useEffect(() => {
     const getAllUsers = async () => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { defaultWidth } from '@/app/a/layout';
 
 const PageLoading = () => {
