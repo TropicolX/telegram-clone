@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
 
-import '@stream-io/video-react-sdk/dist/css/styles.css';
 import './globals.scss';
 
 export const metadata: Metadata = {
@@ -15,12 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className="h-svh w-svw lg:h-screen lg:w-screen antialiased text-color-text select-none overflow-hidden">
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className="h-svh w-svw lg:h-screen lg:w-screen antialiased text-color-text select-none overflow-hidden">
+        {children}
+      </body>
+    </html>
   );
 }
