@@ -1,22 +1,15 @@
-import { useEffect, useState } from 'react';
+import { defaultWidth } from '../app/a/layout';
 
-import { defaultWidth } from '@/app/a/layout';
+interface PageLoadingProps {
+  sidebarWidth: number;
+}
 
-const PageLoading = () => {
-  const [width, setWidth] = useState(defaultWidth);
-
-  useEffect(() => {
-    const savedWidth =
-      parseInt(localStorage.getItem('sidebarWidth') as string) || defaultWidth;
-    localStorage.setItem('sidebarWidth', String(savedWidth));
-    setWidth(savedWidth);
-  }, []);
-
+const PageLoading = ({ sidebarWidth }: PageLoadingProps) => {
   return (
     <div className="flex h-full w-full">
       <div
         style={{
-          width: `${width}px`,
+          width: `${sidebarWidth || defaultWidth}px`,
         }}
         className="bg-background h-full flex-shrink-0 relative"
       ></div>

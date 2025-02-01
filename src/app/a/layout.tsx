@@ -81,7 +81,7 @@ export default function Layout({ children }: LayoutProps) {
     if (user) setUpChatAndVideo();
   }, [user, videoClient, chatClient]);
 
-  if (loading) return <PageLoading />;
+  if (loading) return <PageLoading sidebarWidth={sidebarWidth} />;
 
   return (
     <Chat client={chatClient!}>
