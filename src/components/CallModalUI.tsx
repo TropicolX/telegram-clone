@@ -66,7 +66,55 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
 
   if (!call) return null;
 
-  if (callingState === CallingState.JOINED) {
+  if (
+    [CallingState.RINGING, CallingState.JOINING, CallingState.IDLE].includes(
+      callingState
+    )
+  ) {
+    return (
+      <div className="absolute px-3.5 py-1.5 top-0 left-0 flex flex-col w-full h-full bg-ringing-gradient rounded-xl overflow-hidden border border-[#797c814d]">
+        <div className="flex items-center select-none text-white">
+          <div className="[&>button]:text-white [&>button]:w-[2.75rem] [&>button]:h-[2.75rem]">
+            <RippleButton icon="fullscreen" />
+          </div>
+          <div
+            onClick={onClose}
+            className="ml-auto [&>button]:text-white [&>button]:w-[2.75rem] [&>button]:h-[2.75rem]"
+          >
+            <RippleButton icon="close" />
+          </div>
+        </div>
+        <div className="flex flex-col mt-20 text-white items-center justify-center overflow-hidden">
+          <h1 className="text-3xl font-medium truncate whitespace-pre">
+            {customData.channelName}
+          </h1>
+          <span className="mt-1">
+            {callingState === CallingState.RINGING && !call.isCreatedByMe
+              ? 'ringing...'
+              : 'waiting...'}
+          </span>
+        </div>
+        <div className="mt-auto mb-4 w-full flex items-center justify-center gap-4">
+          {callingState === CallingState.RINGING && !call.isCreatedByMe && (
+            <button
+              onClick={joinCall}
+              disabled={buttonsDisabled}
+              className="w-[56px] h-[56px] flex items-center justify-center rounded-full border border-[#5cc85e] bg-[#5cc85e] text-[24px] text-white"
+            >
+              <i className="icon icon-phone-discard rotate-[-135deg]" />
+            </button>
+          )}
+          <button
+            onClick={endCall}
+            disabled={buttonsDisabled}
+            className="w-[56px] h-[56px] flex items-center justify-center text-[24px] rounded-full border border-[#ff595a] bg-[#ff595a] text-[white]"
+          >
+            <i className="icon icon-phone-discard" />
+          </button>
+        </div>
+      </div>
+    );
+  } else if (callingState === CallingState.JOINED) {
     return (
       <>
         <div className="top-0 absolute pt-1.5 w-[calc(100%-24px)] z-20 h-[64px] bg-[#212121] flex items-center pb-3.5 select-none text-white">
@@ -162,54 +210,6 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
           <CancelCallButton onClick={endCall} />
         </div>
       </>
-    );
-  } else if (
-    [CallingState.RINGING, CallingState.JOINING, CallingState.IDLE].includes(
-      callingState
-    )
-  ) {
-    return (
-      <div className="absolute px-3.5 py-1.5 top-0 left-0 flex flex-col w-full h-full bg-ringing-gradient rounded-xl overflow-hidden border border-[#797c814d]">
-        <div className="flex items-center select-none text-white">
-          <div className="[&>button]:text-white [&>button]:w-[2.75rem] [&>button]:h-[2.75rem]">
-            <RippleButton icon="fullscreen" />
-          </div>
-          <div
-            onClick={onClose}
-            className="ml-auto [&>button]:text-white [&>button]:w-[2.75rem] [&>button]:h-[2.75rem]"
-          >
-            <RippleButton icon="close" />
-          </div>
-        </div>
-        <div className="flex flex-col mt-20 text-white items-center justify-center overflow-hidden">
-          <h1 className="text-3xl font-medium truncate whitespace-pre">
-            {customData.channelName}
-          </h1>
-          <span className="mt-1">
-            {callingState === CallingState.RINGING && !call.isCreatedByMe
-              ? 'ringing...'
-              : 'waiting...'}
-          </span>
-        </div>
-        <div className="mt-auto mb-4 w-full flex items-center justify-center gap-4">
-          {callingState === CallingState.RINGING && !call.isCreatedByMe && (
-            <button
-              onClick={joinCall}
-              disabled={buttonsDisabled}
-              className="w-[56px] h-[56px] flex items-center justify-center rounded-full border border-[#5cc85e] bg-[#5cc85e] text-[24px] text-white"
-            >
-              <i className="icon icon-phone-discard rotate-[-135deg]" />
-            </button>
-          )}
-          <button
-            onClick={endCall}
-            disabled={buttonsDisabled}
-            className="w-[56px] h-[56px] flex items-center justify-center text-[24px] rounded-full border border-[#ff595a] bg-[#ff595a] text-[white]"
-          >
-            <i className="icon icon-phone-discard" />
-          </button>
-        </div>
-      </div>
     );
   }
 
