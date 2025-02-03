@@ -356,7 +356,6 @@ body {
 .message {
   position: relative;
   opacity: 1;
-  // transform: scale(1);
   transition: opacity .2s ease, transform .2s ease;
   user-select: text;
 }
@@ -520,10 +519,6 @@ body {
   fill: var(--color-background);
 }
 
-#channel .str-chat__empty-channel {
-  background: #1a1d21;
-}
-
 #channel .str-chat__li,
 #channel .str-chat__message-text {
   font-family: var(--font-family);
@@ -539,9 +534,8 @@ body {
 }
 
 #channel .str-chat__message-text {
-  color: var(--primary);
-  font-size: 14.8px;
-  line-height: 1.46668;
+  font-size: 15px;
+  line-height: 1.3125;
 }
 
 #channel .str-chat__main-panel-inner.str-chat__message-list-main-panel {
@@ -561,19 +555,6 @@ body {
 
 #channel .str-chat__unread-messages-notification {
   display: none;
-}
-
-.input-container ul>li:before,
-.input-container ol>li:before,
-#channel .str-chat__message-text ul>li:before,
-#channel .str-chat__message-text ol>li:before {
-  color: var(--channel-gray);
-  display: inline-block;
-  width: 24px;
-  margin-left: -24px;
-  vertical-align: baseline;
-  text-align: center;
-  content: '•';
 }
 
 #channel .str-chat__message-attachment-file--item {

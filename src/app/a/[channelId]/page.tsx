@@ -58,7 +58,7 @@ const Chat = () => {
     };
 
     if (chatClient && !chatChannel) loadChannel();
-  }, [channelId, chatChannel, chatClient, router, videoClient]);
+  }, [channelId, chatChannel, chatClient, videoClient]);
 
   useEffect(() => {
     if (activeCall?.state.callingState === CallingState.RINGING) {
