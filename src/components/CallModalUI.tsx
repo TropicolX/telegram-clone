@@ -1,17 +1,18 @@
 import { useMemo } from 'react';
 import {
   CallingState,
-  CancelCallButton,
+  useCall,
+  useCallStateHooks,
   hasScreenShare,
   isPinned,
+  CancelCallButton,
   PaginatedGridLayout,
   ScreenShareButton,
   SpeakerLayout,
   SpeakingWhileMutedNotification,
   ToggleAudioPublishingButton,
   ToggleVideoPublishingButton,
-  useCall,
-  useCallStateHooks,
+  MemberRequest,
 } from '@stream-io/video-react-sdk';
 import { useUser } from '@clerk/nextjs';
 import clsx from 'clsx';
@@ -31,13 +32,14 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
     useParticipants,
     useParticipantCount,
   } = useCallStateHooks();
-  const { user } = useUser();
   const callingState = useCallCallingState();
   const customData = useCallCustomData();
-  const participantCount = useParticipantCount();
+
   const participants = useParticipants();
   const [participantInSpotlight] = participants;
 
+  const { user } = useUser();
+  const participantCount = useParticipantCount();
   const isSpeakerLayout = useMemo(() => {
     if (participantInSpotlight) {
       return (
@@ -64,6 +66,19 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
     }
   };
 
+  const chatName = useMemo(() => {
+    if (customData.isDMChannel) {
+      const member = customData.members.find(
+        (member: MemberRequest) => member.user_id !== user?.id
+      );
+      return member?.name;
+    } else {
+      return customData.channelName;
+    }
+  }, [customData, user]);
+
+  const callTriggeredByMe = customData.triggeredBy === user?.id;
+
   if (!call) return null;
 
   if (
@@ -86,16 +101,16 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
         </div>
         <div className="flex flex-col mt-20 text-white items-center justify-center overflow-hidden">
           <h1 className="text-3xl font-medium truncate whitespace-pre">
-            {customData.channelName}
+            {chatName}
           </h1>
           <span className="mt-1">
-            {callingState === CallingState.RINGING && !call.isCreatedByMe
+            {callingState === CallingState.RINGING && !callTriggeredByMe
               ? 'ringing...'
               : 'waiting...'}
           </span>
         </div>
         <div className="mt-auto mb-4 w-full flex items-center justify-center gap-4">
-          {callingState === CallingState.RINGING && !call.isCreatedByMe && (
+          {callingState === CallingState.RINGING && !callTriggeredByMe && (
             <button
               onClick={joinCall}
               disabled={buttonsDisabled}
@@ -123,7 +138,7 @@ const CallModalUI = ({ onClose }: CallModalUIProps) => {
           </div>
           <div className="flex flex-col justify-center overflow-hidden ml-[1.375rem]">
             <h3 className="text-[1rem] font-medium truncate whitespace-pre leading-[1.375rem]">
-              {customData.channelName}
+              {chatName}
             </h3>
             {!customData.isDMChannel && (
               <span className="inline-block truncate text-color-text-secondary text-sm leading-[1.125rem]">

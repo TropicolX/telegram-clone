@@ -20,8 +20,9 @@ const ChatPreview = ({
   const router = useRouter();
   const pathname = usePathname();
   const [activeCall] = useCalls();
-
   const callActive = activeCall?.id === channel.id;
+
+  const isDMChannel = channel.id?.startsWith('!members');
 
   const goToChat = () => {
     const channelId = channel.id;
@@ -44,17 +45,16 @@ const ChatPreview = ({
 
   const getImage = useCallback(() => {
     if (displayImage) return displayImage;
-    else {
+    else if (isDMChannel) {
       const member = getDMUser();
       return member.image;
     }
-  }, [displayImage, getDMUser]);
+  }, [displayImage, getDMUser, isDMChannel]);
 
   const lastText = useMemo(() => {
     if (lastMessage) {
       return lastMessage.text;
     }
-    const isDMChannel = channel.id?.startsWith('!members');
 
     if (isDMChannel) {
       return `${getChatName()} joined Telegram`;
@@ -68,10 +68,10 @@ const ChatPreview = ({
     }
   }, [
     lastMessage,
-    channel.id,
     channel.data?.created_by,
     getChatName,
     displayTitle,
+    isDMChannel,
   ]);
 
   const lastMessageDate = useMemo(() => {

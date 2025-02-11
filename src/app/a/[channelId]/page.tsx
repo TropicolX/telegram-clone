@@ -120,6 +120,8 @@ const Chat = () => {
     const members = Object.values(initialMembers).map<MemberRequest>(
       (member) => ({
         user_id: member.user?.id as string,
+        name: member.user?.name as string,
+        role: isDMChannel ? 'admin' : undefined,
       })
     );
 
@@ -130,7 +132,15 @@ const Chat = () => {
           channelCid: chatChannel?.cid,
           channelName: getChatName(),
           isDMChannel,
+          members,
         },
+        members,
+      },
+    });
+
+    await channelCall?.update({
+      custom: {
+        triggeredBy: user?.id,
         members,
       },
     });
@@ -146,6 +156,7 @@ const Chat = () => {
     chatChannel?.state.members,
     getChatName,
     isDMChannel,
+    user,
   ]);
 
   const onCloseModal = async () => {
